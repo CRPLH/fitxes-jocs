@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitxa Joc de Taula - LOMLOE</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --salmon: #f7a98b;
+    --salmon-light: #fce8de;
+    --teal: #5bbfb5;
+    --yellow: #f5c842;
+    --purple: #9b7fd4;
+    --text: #3a3a3a;
+    --border: #d0b8b0;
+    --white: #fff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: #f0ebe6; min-height: 100vh; padding: 16px; color: var(--text); }
+
+  /* ===== TITOL I BOTONS ===== */
+  .page-title { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: var(--salmon); text-align: center; margin-bottom: 12px; }
+  .btn-row { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+  .btn { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .82rem; border: none; border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+  .btn-nova { background: var(--salmon); color: white; }
+  .btn-desar { background: var(--teal); color: white; }
+  .btn-print { background: var(--purple); color: white; }
+  .btn-small { font-size: .75rem; padding: 5px 10px; background: #eee; color: var(--text); border-radius: 6px; border: none; cursor: pointer; }
+  .btn-small:hover { background: #ddd; }
+  .status { font-size: .78rem; color: var(--teal); font-weight: 700; margin: 6px auto; min-height: 18px; text-align: center; max-width: 900px; }
+
+  /* ===== FITXA ===== */
+  .fitxa { background: var(--white); border-radius: 16px; overflow: visible; max-width: 900px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.12); border: 3px solid var(--salmon); }
+  .fitxa-header { background: var(--salmon-light); padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--salmon); flex-wrap: wrap; border-radius: 13px 13px 0 0; }
+  .nom-joc-wrap { flex: 1; min-width: 180px; position: relative; }
+  .nom-joc-input { width: 100%; font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 700; border: 2px solid var(--text); border-radius: 10px; padding: 7px 12px; background: white; outline: none; color: var(--text); transition: border-color .2s; }
+  .nom-joc-input:focus { border-color: var(--teal); }
+  .nom-joc-input::placeholder { color: #bbb; font-weight: 400; }
+  .suggestions { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: white; border: 2px solid var(--teal); border-radius: 10px; z-index: 200; max-height: 200px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .suggestion-item { padding: 7px 12px; cursor: pointer; font-size: .88rem; border-bottom: 1px solid #f0f0f0; }
+  .suggestion-item:hover { background: var(--salmon-light); }
+  .meta-pill { display: flex; align-items: center; gap: 5px; background: white; border: 2px solid var(--border); border-radius: 10px; padding: 5px 10px; font-size: .82rem; font-weight: 700; min-width: 100px; justify-content: center; }
+  .meta-pill .icon { font-size: 1.2rem; }
+  .badge-p { background: var(--yellow); color: #3a3a3a; font-family: 'Fredoka One', cursive; font-size: 1.3rem; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #e0b020; flex-shrink: 0; }
+
+  .fitxa-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .col-left { padding: 14px; border-right: 2px solid var(--salmon-light); display: flex; flex-direction: column; gap: 12px; }
+  .col-right { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+  .imatge-joc { width: 100%; aspect-ratio: 4/3; border-radius: 10px; background: #e8f4f8; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .imatge-joc img { width: 100%; height: 100%; object-fit: cover; }
+  .imatge-placeholder { color: #bbb; font-size: .82rem; text-align: center; padding: 16px; line-height: 1.5; }
+
+  .box { border: 2px solid var(--text); border-radius: 10px; padding: 9px 11px; }
+  .box-title { font-weight: 900; font-size: .82rem; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .5px; }
+  .checkgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 8px; }
+  .check-item { display: flex; align-items: center; gap: 5px; font-size: .78rem; cursor: pointer; user-select: none; }
+  .check-item input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--teal); flex-shrink: 0; }
+
+  .section-label { font-weight: 900; font-size: .85rem; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+  .desc-box { background: var(--salmon-light); border-radius: 10px; padding: 10px; font-size: .8rem; line-height: 1.55; min-height: 100px; color: var(--text); outline: none; border: 2px dashed transparent; transition: border-color .2s; flex: 1; }
+  .desc-box:focus { border-color: var(--teal); }
+  .aplicacions-box { background: var(--salmon-light); border-radius: 10px; padding: 10px; font-size: .8rem; min-height: 75px; outline: none; border: 2px dashed transparent; line-height: 1.5; transition: border-color .2s; }
+  .aplicacions-box:focus { border-color: var(--teal); }
+
+  .fitxa-footer { border-top: 2px solid var(--salmon-light); padding: 10px 16px; background: var(--salmon-light); border-radius: 0 0 13px 13px; }
+  .variants-box { background: white; border-radius: 10px; padding: 9px 11px; font-size: .8rem; min-height: 44px; outline: none; border: 2px dashed transparent; line-height: 1.5; transition: border-color .2s; width: 100%; }
+  .variants-box:focus { border-color: var(--teal); }
+
+  .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid #ccc; border-top-color: var(--teal); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 3px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== PANEL DE FITXES DESADES ===== */
+  .fitxes-panel { max-width: 900px; margin: 14px auto 0; background: white; border-radius: 14px; border: 2px solid var(--border); overflow: hidden; }
+  .fitxes-panel-header { background: var(--salmon-light); padding: 10px 14px; font-weight: 900; font-size: .85rem; text-transform: uppercase; letter-spacing: .5px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+  .fitxes-list { padding: 8px; display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+  .fitxa-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; border: 1px solid #eee; background: #fafafa; transition: background .15s; }
+  .fitxa-item:hover { background: var(--salmon-light); }
+  .fitxa-item-img { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; background: #eee; flex-shrink: 0; }
+  .fitxa-item-img-placeholder { width: 36px; height: 36px; border-radius: 5px; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: .9rem; }
+  .fitxa-item-info { flex: 1; min-width: 0; }
+  .fitxa-item-name { font-weight: 800; font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fitxa-item-meta { font-size: .73rem; color: #888; }
+  .fitxa-item-btns { display: flex; gap: 4px; flex-shrink: 0; }
+  .empty-msg { text-align: center; color: #bbb; font-size: .82rem; padding: 16px; }
+
+  /* ===== IMPRESSIO ===== */
+  @media print {
+    @page { size: A4 landscape; margin: 10mm; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { background: white !important; padding: 0 !important; margin: 0 !important; }
+    .page-title, .btn-row, .status, .suggestions, .fitxes-panel { display: none !important; }
+    .fitxa { max-width: 100% !important; box-shadow: none !important; border: 2px solid var(--salmon) !important; border-radius: 10px !important; page-break-inside: avoid; }
+    .fitxa-header { background: var(--salmon-light) !important; border-radius: 8px 8px 0 0 !important; }
+    .fitxa-footer { background: var(--salmon-light) !important; border-radius: 0 0 8px 8px !important; }
+    .desc-box, .aplicacions-box { background: var(--salmon-light) !important; }
+    .nom-joc-input { border: 2px solid var(--text) !important; }
+    [contenteditable] { border: 2px dashed transparent !important; }
+    .imatge-joc { border: 1px solid var(--border) !important; }
+  }
+
+  @media (max-width: 600px) {
+    .fitxa-body { grid-template-columns: 1fr; }
+    .col-left { border-right: none; border-bottom: 2px solid var(--salmon-light); }
+  }
+</style>
+</head>
+<body>
+
+<p class="page-title">&#127922; Fitxa d'Analisi de Jocs de Taula &middot; Curriculum LOMLOE</p>
+
+<div class="fitxa">
+  <div class="fitxa-header">
+    <div class="nom-joc-wrap">
+      <input class="nom-joc-input" id="nomJoc" type="text" placeholder="Escriu el nom del joc..." autocomplete="off">
+      <div class="suggestions" id="suggestions" style="display:none"></div>
+    </div>
+    <div class="meta-pill"><span class="icon">&#128101;</span><span id="jugadorsVal">&#8211;</span></div>
+    <div class="meta-pill"><span class="icon">&#128336;</span><span id="tempsVal">&#8211;</span></div>
+    <div class="meta-pill"><span class="icon">&#128106;</span><span id="edatVal">&#8211;</span></div>
+    <div class="badge-p">P</div>
+  </div>
+
+  <div class="fitxa-body">
+    <div class="col-left">
+      <div class="imatge-joc" id="imatgeWrap">
+        <div class="imatge-placeholder">&#128247;<br>La imatge del joc<br>apareixera aqui</div>
+      </div>
+      <div class="box">
+        <div class="box-title">Area / Materia</div>
+        <div class="checkgrid">
+          <label class="check-item"><input type="checkbox" data-area="Llengues"> Llengues</label>
+          <label class="check-item"><input type="checkbox" data-area="Ll. estrangeres"> Ll. estrangeres</label>
+          <label class="check-item"><input type="checkbox" data-area="Matematiques"> Matematiques</label>
+          <label class="check-item"><input type="checkbox" data-area="Ed. Artistica"> Ed. Artistica</label>
+          <label class="check-item"><input type="checkbox" data-area="Con. Medi"> Con. Medi</label>
+          <label class="check-item"><input type="checkbox" data-area="Ed. en Valors"> Ed. en Valors</label>
+          <label class="check-item"><input type="checkbox" data-area="Educacio Fisica"> Educacio Fisica</label>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-title">Competencies Clau</div>
+        <div class="checkgrid">
+          <label class="check-item"><input type="checkbox" data-comp="Plurilingue"> Plurilingue</label>
+          <label class="check-item"><input type="checkbox" data-comp="Comp. linguistica"> Comp. linguistica</label>
+          <label class="check-item"><input type="checkbox" data-comp="Emprenedora"> Emprenedora</label>
+          <label class="check-item"><input type="checkbox" data-comp="Ciutadana"> Ciutadana</label>
+          <label class="check-item"><input type="checkbox" data-comp="Digital"> Digital</label>
+          <label class="check-item"><input type="checkbox" data-comp="Personal i social"> Personal i social</label>
+          <label class="check-item"><input type="checkbox" data-comp="Matematica i ciencies"> Matematica i ciencies</label>
+          <label class="check-item"><input type="checkbox" data-comp="Consciencia cultural"> Consciencia cultural</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <div class="section-label">Descripcio</div>
+        <div class="desc-box" id="descripcio" contenteditable="true">
+          <span style="color:#bbb">Introdueix el nom del joc per carregar la descripcio automaticament, o escriu-la tu manualment.</span>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Aplicacions</div>
+        <div class="aplicacions-box" id="aplicacions" contenteditable="true" placeholder="Com s'utilitza a l'aula? Quines activitats es poden fer?"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fitxa-footer">
+    <div class="section-label" style="margin-bottom:5px">Variants</div>
+    <div class="variants-box" id="variants" contenteditable="true" placeholder="Variacions, adaptacions..."></div>
+  </div>
+</div>
+
+<div id="statusMsg" class="status"></div>
+
+<div class="btn-row">
+  <button class="btn btn-nova" onclick="netejarFitxa()">&#10011; Nova fitxa</button>
+  <button class="btn btn-desar" onclick="desarFitxa()">&#128190; Desar fitxa</button>
+  <button class="btn btn-print" onclick="imprimirFitxa()">&#128438; Imprimir fitxa</button>
+</div>
+
+<!-- Panel fitxes desades -->
+<div class="fitxes-panel" id="fitxesPanel">
+  <div class="fitxes-panel-header">
+    <span>&#128193; Fitxes desades</span>
+    <span id="fitxesCount" style="font-weight:400;font-size:.78rem;color:#888"></span>
+  </div>
+  <div class="fitxes-list" id="fitxesList">
+    <div class="empty-msg">Encara no hi ha fitxes desades.</div>
+  </div>
+</div>
+
+<script>
+// ===== ESTAT GLOBAL =====
+let searchTimeout = null;
+let imatgeBase64 = null; // la imatge actual en base64
+
+const nomInput   = document.getElementById('nomJoc');
+const suggestBox = document.getElementById('suggestions');
+const statusMsg  = document.getElementById('statusMsg');
+
+// ===== CERCA =====
+nomInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  const q = nomInput.value.trim();
+  if (q.length < 3) { hideSuggestions(); return; }
+  searchTimeout = setTimeout(() => searchGames(q), 600);
+});
+nomInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') hideSuggestions();
+  if (e.key === 'Enter') { hideSuggestions(); const q = nomInput.value.trim(); if (q.length >= 2) loadGameByName(q); }
+});
+document.addEventListener('click', e => { if (!e.target.closest('.nom-joc-wrap')) hideSuggestions(); });
+
+async function searchGames(q) {
+  setStatus('<span class="spinner"></span> Cercant jocs...');
+  try {
+    const prompt = 'Busca el joc de taula "' + q + '" a BoardGameGeek. Retorna NOMES un JSON array valid (sense markdown, sense text extra) amb format:\n[{"id":"ID_BGG","name":"Nom","year":"Any"}]\nMaxim 6 resultats. Si no en trobes, retorna [].';
+    const data = await callClaude(prompt, true);
+    const text = extractText(data);
+    const results = safeParseJSON(text, []);
+    showSuggestions(Array.isArray(results) ? results : []);
+    setStatus('');
+  } catch(e) { setStatus(''); hideSuggestions(); }
+}
+
+function showSuggestions(results) {
+  suggestBox.innerHTML = '';
+  if (!results.length) { hideSuggestions(); return; }
+  results.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'suggestion-item';
+    div.textContent = r.name + (r.year ? ' (' + r.year + ')' : '');
+    div.addEventListener('click', () => { nomInput.value = r.name; hideSuggestions(); loadGameById(r.id, r.name); });
+    suggestBox.appendChild(div);
+  });
+  suggestBox.style.display = 'block';
+}
+function hideSuggestions() { suggestBox.style.display = 'none'; }
+
+// ===== CARREGA JOC =====
+async function loadGameByName(name) {
+  setStatus('<span class="spinner"></span> Cercant el joc...');
+  await processGame('el joc de taula anomenat "' + name + '"', name);
+}
+async function loadGameById(id, name) {
+  setStatus('<span class="spinner"></span> Carregant dades de BGG...');
+  await processGame('el joc amb BGG ID ' + id + ' (nom: "' + name + '")', name);
+}
+
+async function processGame(ref, fallbackName) {
+  imatgeBase64 = null;
+  try {
+    const prompt = 'Busca a BoardGameGeek la informacio completa de ' + ref + '.\n' +
+      'Retorna NOMES un objecte JSON valid (sense markdown, sense text extra) amb EXACTAMENT aquest format:\n' +
+      '{"name":"Nom oficial","minPlayers":"2","maxPlayers":"4","minTime":"30","maxTime":"60","age":"8",' +
+      '"imageUrl":"URL_DIRECTA_IMATGE","description":"Descripcio en catala de Catalunya, fluida i adaptada per a mestres d\'escola primaria de 200-300 paraules."}\n' +
+      'Per imageUrl: busca la URL directa de la imatge del joc. Prova amb:\n' +
+      '1) La imatge de BGG (cf.geekdo-images.com)\n' +
+      '2) La imatge de Wikipedia del joc\n' +
+      '3) Qualsevol imatge publica del joc sense restriccions CORS\n' +
+      'Prioritza URLs de Wikipedia/Wikimedia (upload.wikimedia.org) que no tinguen CORS.\n' +
+      'Si no trobes alguna dada, usa "?".';
+
+    const data = await callClaude(prompt, true);
+    const text = extractText(data);
+    const joc = safeParseJSON(text, null);
+    if (!joc) throw new Error('JSON invalid');
+
+    // Jugadors
+    const minP = joc.minPlayers || '?', maxP = joc.maxPlayers || '?';
+    document.getElementById('jugadorsVal').textContent = (minP === maxP) ? minP + ' jug.' : minP + '-' + maxP + ' jug.';
+
+    // Temps
+    const minT = joc.minTime || '', maxT = joc.maxTime || '';
+    document.getElementById('tempsVal').textContent =
+      (minT && maxT && minT !== maxT) ? minT + '-' + maxT + ' min' : (maxT && maxT !== '?') ? maxT + ' min' : '- min';
+
+    // Edat
+    const age = joc.age || '?';
+    document.getElementById('edatVal').textContent = age !== '?' ? '+' + age + ' anys' : '?';
+
+    // Nom
+    if (joc.name && joc.name !== '?') nomInput.value = joc.name;
+
+    // Descripcio
+    document.getElementById('descripcio').textContent = joc.description || "No s'ha trobat descripcio.";
+
+    // Imatge
+    const imatgeWrap = document.getElementById('imatgeWrap');
+    if (joc.imageUrl && joc.imageUrl.startsWith('http')) {
+      imatgeWrap.innerHTML = '<div class="imatge-placeholder"><span class="spinner"></span><br>Carregant imatge...</div>';
+      carregarImatge(joc.imageUrl, joc.name || fallbackName, imatgeWrap);
+    }
+
+    setStatus('Informacio carregada!');
+    setTimeout(() => setStatus(''), 3000);
+  } catch(e) {
+    console.error(e);
+    setStatus("No s'han pogut carregar les dades. Prova un altre joc.");
+  }
+}
+
+// ===== CARREGA IMATGE (sense CORS) =====
+async function carregarImatge(url, alt, wrapper) {
+  // Intent 1: img directa (funciona si no hi ha CORS estricte)
+  const testImg = new Image();
+  testImg.crossOrigin = 'anonymous';
+
+  const loadDirect = new Promise(resolve => {
+    testImg.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = testImg.naturalWidth;
+        canvas.height = testImg.naturalHeight;
+        canvas.getContext('2d').drawImage(testImg, 0, 0);
+        const b64 = canvas.toDataURL('image/jpeg', 0.85);
+        imatgeBase64 = b64;
+        wrapper.innerHTML = '<img src="' + b64 + '" alt="' + alt + '">';
+        resolve(true);
+      } catch(e) { resolve(false); }
+    };
+    testImg.onerror = () => resolve(false);
+    testImg.src = url;
+    setTimeout(() => resolve(false), 6000);
+  });
+
+  const ok1 = await loadDirect;
+  if (ok1) return;
+
+  // Intent 2: proxy corsproxy.io
+  try {
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+    if (res.ok) {
+      const blob = await res.blob();
+      if (blob.type.startsWith('image/')) {
+        const b64 = await blobToBase64(blob);
+        imatgeBase64 = b64;
+        wrapper.innerHTML = '<img src="' + b64 + '" alt="' + alt + '">';
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Intent 3: proxy allorigins
+  try {
+    const proxyUrl2 = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+    const res2 = await fetch(proxyUrl2, { signal: AbortSignal.timeout(8000) });
+    if (res2.ok) {
+      const blob2 = await res2.blob();
+      if (blob2.type.startsWith('image/')) {
+        const b64 = await blobToBase64(blob2);
+        imatgeBase64 = b64;
+        wrapper.innerHTML = '<img src="' + b64 + '" alt="' + alt + '">';
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Fallback: mostrem la imatge directa sense base64 (visible pero no desable)
+  wrapper.innerHTML = '<img src="' + url + '" alt="' + alt + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML=\'<div class=imatge-placeholder>Imatge no disponible</div>\'">';
+}
+
+function blobToBase64(blob) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = rej;
+    r.readAsDataURL(blob);
+  });
+}
+
+// ===== IMPRESSIO =====
+function imprimirFitxa() {
+  window.print();
+}
+
+// ===== DESAR FITXES (window.storage) =====
+async function desarFitxa() {
+  const nom = nomInput.value.trim();
+  if (!nom) { setStatus('Escriu primer el nom del joc.'); return; }
+
+  const id = 'fitxa:' + nom.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Date.now();
+  const areas = Array.from(document.querySelectorAll('[data-area]:checked')).map(el => el.dataset.area);
+  const comps = Array.from(document.querySelectorAll('[data-comp]:checked')).map(el => el.dataset.comp);
+
+  const fitxa = {
+    id,
+    nom,
+    jugadors: document.getElementById('jugadorsVal').textContent,
+    temps: document.getElementById('tempsVal').textContent,
+    edat: document.getElementById('edatVal').textContent,
+    descripcio: document.getElementById('descripcio').textContent,
+    aplicacions: document.getElementById('aplicacions').textContent,
+    variants: document.getElementById('variants').textContent,
+    areas,
+    comps,
+    imatge: imatgeBase64 || null,
+    data: new Date().toLocaleDateString('ca-ES')
+  };
+
+  try {
+    await window.storage.set(id, JSON.stringify(fitxa));
+    setStatus('Fitxa desada correctament!');
+    setTimeout(() => setStatus(''), 3000);
+    carregarLlistat();
+  } catch(e) {
+    setStatus('Error en desar la fitxa: ' + e.message);
+  }
+}
+
+async function carregarLlistat() {
+  const list = document.getElementById('fitxesList');
+  const counter = document.getElementById('fitxesCount');
+  try {
+    const keys = await window.storage.list('fitxa:');
+    if (!keys || !keys.keys || !keys.keys.length) {
+      list.innerHTML = '<div class="empty-msg">Encara no hi ha fitxes desades.</div>';
+      counter.textContent = '';
+      return;
+    }
+    counter.textContent = keys.keys.length + ' fitxa' + (keys.keys.length !== 1 ? 'es' : '');
+    list.innerHTML = '';
+    // Carreguem totes les fitxes
+    const fitxes = [];
+    for (const key of keys.keys) {
+      try {
+        const r = await window.storage.get(key);
+        if (r) fitxes.push(JSON.parse(r.value));
+      } catch(e) {}
+    }
+    fitxes.sort((a,b) => b.id.localeCompare(a.id));
+    fitxes.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'fitxa-item';
+      const imgHtml = f.imatge
+        ? '<img class="fitxa-item-img" src="' + f.imatge + '" alt="">'
+        : '<div class="fitxa-item-img-placeholder">&#127922;</div>';
+      div.innerHTML = imgHtml +
+        '<div class="fitxa-item-info">' +
+          '<div class="fitxa-item-name">' + f.nom + '</div>' +
+          '<div class="fitxa-item-meta">' + f.jugadors + ' &bull; ' + f.temps + ' &bull; ' + f.edat + ' &bull; ' + f.data + '</div>' +
+        '</div>' +
+        '<div class="fitxa-item-btns">' +
+          '<button class="btn-small" onclick="carregarFitxa(' + JSON.stringify(JSON.stringify(f)) + ')">Obrir</button>' +
+          '<button class="btn-small" style="color:#c0392b" onclick="eliminarFitxa(' + JSON.stringify(f.id) + ')">&#215;</button>' +
+        '</div>';
+      list.appendChild(div);
+    });
+  } catch(e) {
+    list.innerHTML = '<div class="empty-msg">Error en carregar les fitxes.</div>';
+  }
+}
+
+function carregarFitxa(jsonStr) {
+  const f = JSON.parse(jsonStr);
+  nomInput.value = f.nom;
+  document.getElementById('jugadorsVal').textContent = f.jugadors;
+  document.getElementById('tempsVal').textContent = f.temps;
+  document.getElementById('edatVal').textContent = f.edat;
+  document.getElementById('descripcio').textContent = f.descripcio;
+  document.getElementById('aplicacions').textContent = f.aplicacions || '';
+  document.getElementById('variants').textContent = f.variants || '';
+
+  document.querySelectorAll('[data-area]').forEach(el => { el.checked = f.areas && f.areas.includes(el.dataset.area); });
+  document.querySelectorAll('[data-comp]').forEach(el => { el.checked = f.comps && f.comps.includes(el.dataset.comp); });
+
+  const imatgeWrap = document.getElementById('imatgeWrap');
+  if (f.imatge) {
+    imatgeBase64 = f.imatge;
+    imatgeWrap.innerHTML = '<img src="' + f.imatge + '" alt="' + f.nom + '">';
+  } else {
+    imatgeBase64 = null;
+    imatgeWrap.innerHTML = '<div class="imatge-placeholder">&#128247;<br>Imatge no disponible</div>';
+  }
+  setStatus('Fitxa "' + f.nom + '" carregada.');
+  setTimeout(() => setStatus(''), 3000);
+}
+
+async function eliminarFitxa(id) {
+  if (!confirm('Eliminar aquesta fitxa?')) return;
+  try {
+    await window.storage.delete(id);
+    carregarLlistat();
+    setStatus('Fitxa eliminada.');
+    setTimeout(() => setStatus(''), 2000);
+  } catch(e) { setStatus('Error en eliminar.'); }
+}
+
+function netejarFitxa() {
+  nomInput.value = '';
+  imatgeBase64 = null;
+  document.getElementById('jugadorsVal').textContent = '-';
+  document.getElementById('tempsVal').textContent = '-';
+  document.getElementById('edatVal').textContent = '-';
+  document.getElementById('imatgeWrap').innerHTML = '<div class="imatge-placeholder">&#128247;<br>La imatge del joc<br>apareixera aqui</div>';
+  document.getElementById('descripcio').innerHTML = '<span style="color:#bbb">Introdueix el nom del joc per carregar la descripcio automaticament, o escriu-la tu manualment.</span>';
+  document.getElementById('aplicacions').textContent = '';
+  document.getElementById('variants').textContent = '';
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+  setStatus('');
+  nomInput.focus();
+}
+
+// ===== UTILS =====
+function extractText(data) {
+  if (!data || !data.content) return '';
+  return data.content.map(b => b.type === 'text' ? b.text : '').filter(Boolean).join('');
+}
+
+function safeParseJSON(text, fallback) {
+  try {
+    const clean = text.replace(/```json|```/g, '').trim();
+    // Extrau el primer JSON valid (array o objecte)
+    const m = clean.match(/(\[[\s\S]*\]|\{[\s\S]*\})/);
+    return m ? JSON.parse(m[0]) : fallback;
+  } catch(e) { return fallback; }
+}
+
+async function callClaude(userPrompt, useSearch) {
+  const body = {
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1500,
+    messages: [{ role: 'user', content: userPrompt }]
+  };
+  if (useSearch) body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  return res.json();
+}
+
+function setStatus(html) { statusMsg.innerHTML = html; }
+
+// ===== INIT =====
+window.addEventListener('load', () => {
+  if (window.storage) carregarLlistat();
+  else document.getElementById('fitxesPanel').innerHTML = '<div style="padding:12px;color:#bbb;text-align:center;font-size:.82rem">El desament persistent no esta disponible en aquest entorn.</div>';
+});
+</script>
+</body>
+</html>
