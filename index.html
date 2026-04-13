@@ -17,10 +17,10 @@
             --border: #d0b8b0;
             --white: #fff;
             
-            --color-P: #ff6b6b; --color-P-bg: #fff5f5;
-            --color-M: #f5c842; --color-M-bg: #fffdf5;
-            --color-G: #5bbfb5; --color-G-bg: #f5fcfb;
-            --color-J: #9b7fd4; --color-J-bg: #f9f7fe;
+            --color-P: #ff6b6b;
+            --color-M: #f5c842;
+            --color-G: #5bbfb5;
+            --color-J: #9b7fd4;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Nunito', sans-serif; background: #f0ebe6; min-height: 100vh; padding: 16px; color: var(--text); padding-bottom: 80px; }
@@ -53,12 +53,12 @@
         .fitxa { 
             background: var(--white); border-radius: 16px; overflow: hidden; max-width: 900px; 
             margin: 0 auto; box-shadow: 0 4px 25px rgba(0,0,0,0.15); border: 4px solid var(--salmon); 
-            position: relative; transition: all 0.4s ease;
+            position: relative; transition: border-color 0.3s ease;
         }
         
         .fitxa-header { 
             background: white; padding: 16px; display: flex; align-items: center; 
-            gap: 12px; border-bottom: 2px solid var(--salmon); flex-wrap: wrap; 
+            gap: 12px; border-bottom: 2px solid var(--border); flex-wrap: wrap; 
         }
         
         .nom-joc-wrap { flex: 1; min-width: 250px; position: relative; }
@@ -84,6 +84,7 @@
             font-size: 1.4rem; width: 48px; height: 48px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; text-align: center;
             border: 3px solid var(--text); cursor: pointer; outline: none;
+            transition: background 0.3s ease;
         }
 
         .fitxa-body { display: grid; grid-template-columns: 1fr 1fr; background: inherit; }
@@ -105,8 +106,12 @@
 
         .fitxes-panel { max-width: 900px; margin: 30px auto; background: white; border-radius: 16px; border: 3px solid var(--text); overflow: hidden; }
         .panel-header { background: var(--text); color: white; padding: 15px 20px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; font-family: 'Fredoka One', cursive; }
-        .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; align-items: end; }
-        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600; }
+        
+        .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: end; }
+        .filter-block { display: flex; flex-direction: column; gap: 4px; }
+        .filter-label { font-size: 0.65rem; font-weight: 900; color: var(--salmon); text-transform: uppercase; letter-spacing: 0.5px; }
+        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; width: 100%; background: white; transition: border-color 0.2s; }
+        .filter-input:focus { border-color: var(--salmon); outline: none; }
 
         .fitxes-list { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; max-height: 600px; overflow-y: auto; }
         .card { border: 2px solid #eee; padding: 12px; border-radius: 15px; display: flex; gap: 12px; align-items: center; background: white; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -200,10 +205,36 @@
 
     <div class="fitxes-panel">
         <div class="panel-header">📚 BIBLIOTECA DE CENTRE <span id="counter" style="font-size: 0.7rem;"></span></div>
+        
         <div class="filter-bar">
-            <input type="text" id="filterNom" class="filter-input" placeholder="Cerca per nom...">
-            <select id="filterGrup" class="filter-input"><option value="">Tots els grups</option><option value="P">P</option><option value="M">M</option><option value="G">G</option><option value="J">J</option></select>
+            <div class="filter-block">
+                <label class="filter-label">🔍 Nom del Joc</label>
+                <input type="text" id="filterNom" class="filter-input" placeholder="Cerca...">
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">🏷️ Grup / Etapa</label>
+                <select id="filterGrup" class="filter-input">
+                    <option value="">Tots</option>
+                    <option value="P">Grup P</option>
+                    <option value="M">Grup M</option>
+                    <option value="G">Grup G</option>
+                    <option value="J">Grup J</option>
+                </select>
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">🧒 Edat (Mín)</label>
+                <input type="number" id="filterEdat" class="filter-input" placeholder="Anys...">
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">👥 Jugadors</label>
+                <input type="number" id="filterJugadors" class="filter-input" placeholder="Cant...">
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">⏱️ Temps Màx</label>
+                <input type="number" id="filterTemps" class="filter-input" placeholder="Minuts...">
+            </div>
         </div>
+        
         <div class="fitxes-list" id="fitxesList"></div>
     </div>
 
@@ -216,7 +247,6 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    // ATENCIÓ: Configura la teva API KEY de Gemini aquí
     const apiKey = ""; 
     const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'fitxes-jocs-default';
@@ -239,26 +269,35 @@
     function loadAreas(etapa) {
         const grid = document.getElementById('areasGrid');
         grid.innerHTML = '';
-        arees[etapa].forEach(a => {
-            const l = document.createElement('label');
-            l.className = 'check-item';
-            l.innerHTML = `<input type="checkbox" value="${a}"> ${a}`;
-            grid.appendChild(l);
-        });
+        if (arees[etapa]) {
+            arees[etapa].forEach(a => {
+                const l = document.createElement('label');
+                l.className = 'check-item';
+                l.innerHTML = `<input type="checkbox" value="${a}"> ${a}`;
+                grid.appendChild(l);
+            });
+        }
+    }
+
+    // NOVA FUNCIÓ: Actualitza els colors de la fitxa segons el grup
+    function actualitzarColors(grup) {
+        const fitxa = document.getElementById('fitxaActual');
+        const select = document.getElementById('grupSelect');
+        const color = getComputedStyle(document.documentElement).getPropertyValue(`--color-${grup}`).trim();
+        
+        if (fitxa) fitxa.style.borderColor = color;
+        if (select) select.style.backgroundColor = color;
     }
 
     function toggleLoader(show) {
-        document.getElementById('searchingIndicator').style.display = show ? 'block' : 'none';
-        document.getElementById('nomJoc').disabled = show;
+        const indicator = document.getElementById('searchingIndicator');
+        if (indicator) indicator.style.display = show ? 'block' : 'none';
+        const input = document.getElementById('nomJoc');
+        if (input) input.disabled = show;
     }
 
     async function searchBGG(name) {
         if (!name.trim()) return;
-        if (!apiKey) {
-            alert("Falta configurar l'API Key de Gemini al codi per cercar.");
-            return;
-        }
-
         toggleLoader(true);
         try {
             const schema = {
@@ -275,22 +314,23 @@
                             }
                         }
                     }
-                }
+                },
+                required: ["results"]
             };
-            
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const res = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: `Busca el joc de taula "${name}" i dóna'm el seu ID de BoardGameGeek i nom oficial.` }] }],
+                    contents: [{ parts: [{ text: `Busca jocs de taula a BoardGameGeek amb el nom "${name}". Retorna fins a 5 resultats exactes amb ID i any.` }] }],
                     generationConfig: { responseMimeType: "application/json", responseSchema: schema }
                 })
             });
-            
             const data = await res.json();
-            const items = JSON.parse(data.candidates[0].content.parts[0].text).results || [];
-            
+            const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!textResult) throw new Error("Sense resultats.");
+            const parsed = JSON.parse(textResult);
+            const items = parsed.results || [];
             if (items.length > 0) {
                 const list = document.getElementById('searchResultsList');
                 list.innerHTML = '';
@@ -306,11 +346,11 @@
                 });
                 document.getElementById('searchModal').style.display = 'flex';
             } else {
-                alert("No s'ha trobat cap joc amb aquest nom.");
+                alert("No s'ha trobat cap joc.");
             }
         } catch (e) {
             console.error(e);
-            alert("Error en la cerca. Revisa la consola.");
+            alert("Error en la cerca.");
         } finally {
             toggleLoader(false);
         }
@@ -330,20 +370,23 @@
                     imageUrl: { type: "STRING" },
                     desc: { type: "STRING" },
                     edu: { type: "STRING" }
-                }
+                },
+                required: ["name", "players", "time", "age", "imageUrl", "desc", "edu"]
             };
-            const prompt = `Analitza el joc amb ID BGG ${id}. Etapa: ${etapa}. Resumeix objectius pedagògics.`;
+            const prompt = `Proporciona detalls en català del joc BGG ${id} (${name}) per a l'etapa de ${etapa}. Inclou una descripció narrativa pedagògica i com aplicar-lo a l'aula segons competències. Edat com a número sol (ex: 8). Temps com a número sol (ex: 30). Jugadors com a rang (ex: 2-4).`;
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const res = await fetch(url, {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }],
                     generationConfig: { responseMimeType: "application/json", responseSchema: schema }
                 })
             });
-            const d = await res.json();
-            const resData = JSON.parse(d.candidates[0].content.parts[0].text);
-            
+            const data = await res.json();
+            const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!textResult) throw new Error("No s'han rebut detalls.");
+            const resData = JSON.parse(textResult);
             document.getElementById('nomJoc').value = resData.name;
             document.getElementById('jugadorsVal').innerText = resData.players;
             document.getElementById('tempsVal').innerText = resData.time;
@@ -351,31 +394,53 @@
             document.getElementById('descripcio').innerText = resData.desc;
             document.getElementById('aplicacions').innerText = resData.edu;
             updateImg(resData.imageUrl);
-        } catch (e) { alert("Error detalls."); }
-        finally { toggleLoader(false); }
+        } catch (e) { 
+            console.error(e);
+            alert("Error carregant els detalls."); 
+        } finally { 
+            toggleLoader(false); 
+        }
     }
 
     function updateImg(url) {
         currentImageUrl = url;
         const w = document.getElementById('imatgeWrap');
-        w.innerHTML = url ? `<img src="${url}">` : `<div style="color:#888">SENSE IMATGE</div>`;
+        if (w) w.innerHTML = url ? `<img src="${url}">` : `<div style="color:#888">📸 SENSE IMATGE</div>`;
     }
 
     function render() {
         const list = document.getElementById('fitxesList');
+        if (!list) return;
+
         const fNom = document.getElementById('filterNom').value.toLowerCase();
         const fGrup = document.getElementById('filterGrup').value;
+        const fEdat = parseInt(document.getElementById('filterEdat').value) || 0;
+        const fJugadors = parseInt(document.getElementById('filterJugadors').value) || 0;
+        const fTemps = parseInt(document.getElementById('filterTemps').value) || 9999;
+        
         const filtered = allGames.filter(g => {
-            const matchesNom = g.nom.toLowerCase().includes(fNom);
+            const matchesNom = (g.nom || "").toLowerCase().includes(fNom);
             const matchesGrup = fGrup === "" || g.grup === fGrup;
-            return matchesNom && matchesGrup;
+            const gameAge = parseInt(g.edat) || 0;
+            const gameTime = parseInt(g.temps) || 0;
+            const gamePlayersRaw = (g.jugadors || "").split('-')[0];
+            const gamePlayers = parseInt(gamePlayersRaw) || 0;
+
+            const matchesEdat = fEdat === 0 || gameAge >= fEdat;
+            const matchesJugadors = fJugadors === 0 || gamePlayers <= fJugadors;
+            const matchesTemps = gameTime <= fTemps;
+
+            return matchesNom && matchesGrup && matchesEdat && matchesJugadors && matchesTemps;
         });
         
         list.innerHTML = '';
+        const counter = document.getElementById('counter');
+        if (counter) counter.innerText = `(${filtered.length} jocs)`;
+        
         filtered.forEach(g => {
             const d = document.createElement('div');
             d.className = 'card';
-            d.innerHTML = `<img src="${g.imatge || 'https://placehold.co/70'}"><div><b>${g.nom}</b><br><small>Grup ${g.grup}</small></div>`;
+            d.innerHTML = `<img src="${g.imatge || 'https://placehold.co/70'}"><div><b>${g.nom}</b><br><small>Grup ${g.grup} • ${g.edat}+ anys • ${g.temps}min</small></div>`;
             d.onclick = () => {
                 currentDocId = g.id;
                 document.getElementById('nomJoc').value = g.nom;
@@ -383,8 +448,10 @@
                 document.getElementById('tempsVal').innerText = g.temps;
                 document.getElementById('edatVal').innerText = g.edat;
                 document.getElementById('grupSelect').value = g.grup;
+                actualitzarColors(g.grup); // Actualitza color al carregar
                 document.getElementById('descripcio').innerText = g.descripcio;
                 document.getElementById('aplicacions').innerText = g.aplicacions;
+                document.getElementById('variants').innerText = g.variants || '';
                 updateImg(g.imatge);
                 document.getElementById('btnDelete').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -397,8 +464,28 @@
         if (e.key === 'Enter') searchBGG(e.target.value);
     });
 
+    document.getElementById('grupSelect').addEventListener('change', e => {
+        actualitzarColors(e.target.value);
+    });
+
+    document.getElementById('btnNova').onclick = () => {
+        currentDocId = null;
+        document.getElementById('nomJoc').value = '';
+        document.getElementById('jugadorsVal').innerText = '-';
+        document.getElementById('tempsVal').innerText = '-';
+        document.getElementById('edatVal').innerText = '-';
+        document.getElementById('grupSelect').value = 'P';
+        actualitzarColors('P'); // Reset a color per defecte
+        document.getElementById('descripcio').innerText = '';
+        document.getElementById('aplicacions').innerText = '';
+        document.getElementById('variants').innerText = '';
+        updateImg(null);
+        document.getElementById('btnDelete').style.display = 'none';
+        document.getElementById('nomJoc').focus();
+    };
+
     document.getElementById('btnGuardar').onclick = async () => {
-        if (!currentUser) { alert("Has d'estar autenticat per desar."); return; }
+        if (!currentUser) { alert("Connectant..."); return; }
         const data = {
             nom: document.getElementById('nomJoc').value,
             jugadors: document.getElementById('jugadorsVal').innerText,
@@ -407,59 +494,63 @@
             grup: document.getElementById('grupSelect').value,
             descripcio: document.getElementById('descripcio').innerText,
             aplicacions: document.getElementById('aplicacions').innerText,
+            variants: document.getElementById('variants').innerText,
             imatge: currentImageUrl,
             updated: Date.now()
         };
         try {
-            const col = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
-            if (currentDocId) await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
-            else await addDoc(col, data);
-            alert("Desat correctament!");
-        } catch (e) { console.error(e); alert("Error al desar: " + e.message); }
-    };
-
-    document.getElementById('filterNom').oninput = render;
-    document.getElementById('filterGrup').onchange = render;
-
-    // Inicialització de l'autenticació seguint les regles de l'entorn
-    const initAuth = async () => {
-        try {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
+            if (currentDocId) {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
             } else {
-                await signInAnonymously(auth);
+                await addDoc(colRef, data);
             }
-        } catch (error) {
-            console.error("Error d'autenticació:", error);
+            alert("Fitxa desada!");
+        } catch (e) { 
+            console.error(e); 
+            alert("Error al desar."); 
         }
     };
 
-    window.onload = () => {
-        loadAreas('primaria');
-        
-        onAuthStateChanged(auth, user => {
-            currentUser = user;
-            if (user) {
-                document.getElementById('myUid').innerText = user.uid;
-                
-                // Listener de la biblioteca només si estem autenticats
-                if (unsubscribeLibrary) unsubscribeLibrary();
-                
-                const q = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
-                unsubscribeLibrary = onSnapshot(q, 
-                    (snapshot) => {
-                        allGames = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
-                        render();
-                    },
-                    (error) => {
-                        console.error("Error a la biblioteca:", error);
-                    }
-                );
-            }
-        });
-
-        initAuth();
+    document.getElementById('btnDelete').onclick = async () => {
+        if (!currentDocId || !confirm("Esborrar fitxa?")) return;
+        try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
+            document.getElementById('btnNova').click();
+        } catch (e) { console.error(e); }
     };
+
+    document.getElementById('btnPrint').onclick = () => window.print();
+    
+    ['filterNom', 'filterGrup', 'filterEdat', 'filterJugadors', 'filterTemps'].forEach(id => {
+        document.getElementById(id).addEventListener('input', render);
+    });
+
+    document.getElementById('etapaSelect').addEventListener('change', (e) => loadAreas(e.target.value));
+
+    const initAuthAndData = async () => {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+            await signInAnonymously(auth);
+        }
+    };
+
+    onAuthStateChanged(auth, user => {
+        currentUser = user;
+        if (user) {
+            document.getElementById('myUid').innerText = user.uid;
+            const q = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
+            if (unsubscribeLibrary) unsubscribeLibrary();
+            unsubscribeLibrary = onSnapshot(q, (snapshot) => {
+                allGames = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                render();
+            });
+        }
+    });
+
+    loadAreas('primaria');
+    initAuthAndData();
 </script>
 </body>
 </html>
