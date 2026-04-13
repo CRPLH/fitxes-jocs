@@ -104,7 +104,7 @@
         .fitxes-panel { max-width: 900px; margin: 30px auto; background: white; border-radius: 16px; border: 3px solid var(--text); overflow: hidden; }
         .panel-header { background: var(--text); color: white; padding: 15px 20px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; font-family: 'Fredoka One', cursive; }
         
-        .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: end; }
+        .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; align-items: end; }
         .filter-block { display: flex; flex-direction: column; gap: 4px; }
         .filter-label { font-size: 0.65rem; font-weight: 900; color: var(--salmon); text-transform: uppercase; letter-spacing: 0.5px; }
         .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; width: 100%; background: white; }
@@ -126,7 +126,7 @@
 </head>
 <body>
 
-    <p class="page-title">🕹️ Recull de Jocs BGG - Catalunya</p>
+    <p class="page-title"> Recull de Jocs </p>
 
     <div id="searchModal">
         <div class="modal-content">
@@ -207,6 +207,35 @@
                     <option value="M">M</option>
                     <option value="G">G</option>
                     <option value="J">J</option>
+                </select>
+            </div>
+            <!-- Filtres restaurats -->
+            <div class="filter-block">
+                <label class="filter-label">🏫 Cicle/Etapa</label>
+                <select id="filterEtapa" class="filter-input">
+                    <option value="">Totes</option>
+                    <option value="primaria">Primària</option>
+                    <option value="eso">ESO</option>
+                </select>
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">📚 Àrea Curricular</label>
+                <select id="filterArea" class="filter-input">
+                    <option value="">Totes</option>
+                    <option value="Matemàtiques">Matemàtiques</option>
+                    <option value="Llengua">Llengües</option>
+                    <option value="Medi">Medi / Ciències</option>
+                    <option value="Art">Educació Artística</option>
+                    <option value="Valors">Valors</option>
+                </select>
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">⏱️ Temps</label>
+                <select id="filterTemps" class="filter-input">
+                    <option value="">Qualsevol</option>
+                    <option value="short">Ràpid (-20 min)</option>
+                    <option value="medium">Mig (20-45 min)</option>
+                    <option value="long">Llarg (+45 min)</option>
                 </select>
             </div>
         </div>
@@ -315,23 +344,30 @@
             }
         };
 
-        const data = await callGemini(`Troba el joc de taula "${name}" a BoardGameGeek. Retorna llista de IDs.`, schema);
-        indicator.style.display = 'none';
+        try {
+            const data = await callGemini(`Troba el joc de taula "${name}" a BoardGameGeek. Retorna llista de IDs oficials.`, schema);
+            indicator.style.display = 'none';
 
-        if (data && data.results && data.results.length > 0) {
-            const list = document.getElementById('searchResultsList');
-            list.innerHTML = '';
-            data.results.forEach(it => {
-                const div = document.createElement('div');
-                div.className = 'search-result-item';
-                div.innerHTML = `${it.name} (${it.year}) ➔`;
-                div.onclick = () => {
-                    document.getElementById('searchModal').style.display = 'none';
-                    fetchDetails(it.bggId, it.name);
-                };
-                list.appendChild(div);
-            });
-            document.getElementById('searchModal').style.display = 'flex';
+            if (data && data.results && data.results.length > 0) {
+                const list = document.getElementById('searchResultsList');
+                list.innerHTML = '';
+                data.results.forEach(it => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    div.innerHTML = `${it.name} (${it.year}) ➔`;
+                    div.onclick = () => {
+                        document.getElementById('searchModal').style.display = 'none';
+                        fetchDetails(it.bggId, it.name);
+                    };
+                    list.appendChild(div);
+                });
+                document.getElementById('searchModal').style.display = 'flex';
+            } else {
+                alert("No s'han trobat jocs amb aquest nom.");
+            }
+        } catch (error) {
+            indicator.style.display = 'none';
+            console.error("Error en la cerca:", error);
         }
     }
 
@@ -348,7 +384,7 @@
             }
         };
 
-        const resData = await callGemini(`Detalla en català el joc BGG ID ${id} per a l'escola seguint el currículum català.`, schema);
+        const resData = await callGemini(`Detalla en català el joc BGG ID ${id} per a l'escola seguint el currículum català (Decret 175/2022).`, schema);
         indicator.style.display = 'none';
 
         if (resData) {
@@ -359,7 +395,7 @@
             document.getElementById('descripcio').innerText = resData.desc;
             document.getElementById('aplicacions').innerText = resData.edu;
             currentImageUrl = resData.imageUrl;
-            document.getElementById('imatgeWrap').innerHTML = `<img src="${resData.imageUrl}">`;
+            document.getElementById('imatgeWrap').innerHTML = `<img src="${resData.imageUrl}" onerror="this.src='https://placehold.co/400x300?text=SENSE+IMATGE'">`;
         }
     }
 
@@ -367,9 +403,30 @@
         const list = document.getElementById('fitxesList');
         const fNom = document.getElementById('filterNom').value.toLowerCase();
         const fGrup = document.getElementById('filterGrup').value;
+        const fEtapa = document.getElementById('filterEtapa').value;
+        const fArea = document.getElementById('filterArea').value;
+        const fTemps = document.getElementById('filterTemps').value;
 
         const filtered = allGames.filter(g => {
-            return (g.nom || "").toLowerCase().includes(fNom) && (fGrup === "" || g.grup === fGrup);
+            const matchesNom = (g.nom || "").toLowerCase().includes(fNom);
+            const matchesGrup = fGrup === "" || g.grup === fGrup;
+            const matchesEtapa = fEtapa === "" || g.etapa === fEtapa;
+            
+            // Filtre bàsic d'àrees per paraula clau si no hi ha dades estructurades
+            const matchesArea = fArea === "" || 
+                                (g.arees && g.arees.some(a => a.includes(fArea))) ||
+                                (g.aplicacions && g.aplicacions.includes(fArea));
+
+            // Filtre de temps
+            let matchesTemps = true;
+            if (fTemps !== "") {
+                const tNum = parseInt(g.temps) || 0;
+                if (fTemps === "short") matchesTemps = tNum <= 20;
+                else if (fTemps === "medium") matchesTemps = tNum > 20 && tNum <= 45;
+                else if (fTemps === "long") matchesTemps = tNum > 45;
+            }
+
+            return matchesNom && matchesGrup && matchesEtapa && matchesArea && matchesTemps;
         });
 
         list.innerHTML = '';
@@ -398,7 +455,7 @@
         document.getElementById('counter').innerText = `(${filtered.length})`;
     }
 
-    // Events corregits per permetre escriptura i cerca amb Enter
+    // Events de la interfície
     document.getElementById('nomJoc').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -408,8 +465,11 @@
 
     document.getElementById('grupSelect').onchange = e => actualitzarColors(e.target.value);
     document.getElementById('etapaSelect').onchange = e => loadAreas(e.target.value);
-    document.getElementById('filterNom').oninput = renderLibrary;
-    document.getElementById('filterGrup').onchange = renderLibrary;
+    
+    // Listeners de filtres
+    ['filterNom', 'filterGrup', 'filterEtapa', 'filterArea', 'filterTemps'].forEach(id => {
+        document.getElementById(id).addEventListener('input', renderLibrary);
+    });
 
     document.getElementById('btnNova').onclick = () => {
         currentDocId = null;
@@ -421,42 +481,54 @@
         document.getElementById('descripcio').innerText = '';
         document.getElementById('aplicacions').innerText = '';
         document.getElementById('variants').innerText = '';
+        // Netejar checkboxes
+        document.querySelectorAll('#areasGrid input').forEach(i => i.checked = false);
     };
 
     document.getElementById('btnGuardar').onclick = async () => {
         if (!currentUser) return;
+        
+        // Obtenir àrees seleccionades
+        const areesSeleccionades = Array.from(document.querySelectorAll('#areasGrid input:checked')).map(i => i.value);
+
         const data = {
             nom: document.getElementById('nomJoc').value,
             jugadors: document.getElementById('jugadorsVal').innerText,
             temps: document.getElementById('tempsVal').innerText,
             edat: document.getElementById('edatVal').innerText,
             grup: document.getElementById('grupSelect').value,
+            etapa: document.getElementById('etapaSelect').value,
+            arees: areesSeleccionades,
             descripcio: document.getElementById('descripcio').innerText,
             aplicacions: document.getElementById('aplicacions').innerText,
             variants: document.getElementById('variants').innerText,
             imatge: currentImageUrl,
             updated: Date.now()
         };
+
         try {
             if (currentDocId) {
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
             } else {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), data);
             }
-            alert("Desat correctament!");
-        } catch (e) { alert("Error al desar."); }
+            alert("Joc desat correctament a la biblioteca!");
+        } catch (e) { 
+            console.error(e);
+            alert("Error al desar el joc."); 
+        }
     };
 
     document.getElementById('btnPrint').onclick = () => window.print();
     
     document.getElementById('btnDelete').onclick = async () => {
-        if (currentDocId && confirm("Segur que vols esborrar aquest joc?")) {
+        if (currentDocId && confirm("Segur que vols esborrar aquest joc de la biblioteca?")) {
             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
             document.getElementById('btnNova').click();
         }
     };
 
-    // Init
+    // Inicialització
     loadAreas('primaria');
     actualitzarColors('P');
 
@@ -467,7 +539,7 @@
             } else {
                 await signInAnonymously(auth);
             }
-        } catch(e) { console.warn("Auth offline mode active."); }
+        } catch(e) { console.warn("Mode offline actiu."); }
     };
 
     onAuthStateChanged(auth, user => {
@@ -477,7 +549,7 @@
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), snap => {
                 allGames = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 renderLibrary();
-            });
+            }, (err) => console.error("Snapshot error:", err));
         }
     });
 
