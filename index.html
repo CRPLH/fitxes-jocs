@@ -19,13 +19,13 @@
             
             /* Colors per als grups */
             --color-P: #ff6b6b;
-            --color-P-bg: #fff1f1;
+            --color-P-bg: #fff5f5;
             --color-M: #f5c842;
-            --color-M-bg: #fffbed;
+            --color-M-bg: #fffdf5;
             --color-G: #5bbfb5;
-            --color-G-bg: #f0faf9;
+            --color-G-bg: #f5fcfb;
             --color-J: #9b7fd4;
-            --color-J-bg: #f7f4fd;
+            --color-J-bg: #f9f7fe;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Nunito', sans-serif; background: #f0ebe6; min-height: 100vh; padding: 16px; color: var(--text); padding-bottom: 80px; }
@@ -33,7 +33,7 @@
         .page-title { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: var(--salmon); text-align: center; margin-bottom: 12px; }
         
         .btn-row { display: flex; gap: 8px; justify-content: center; margin: 12px 0; flex-wrap: wrap; }
-        .btn { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .82rem; border: none; border-radius: 10px; padding: 10px 20px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px; }
+        .btn { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .82rem; border: none; border-radius: 10px; padding: 10px 20px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .btn-nova { background: var(--salmon); color: white; }
         .btn-desar { background: var(--teal); color: white; }
@@ -43,17 +43,17 @@
         .status { font-size: .85rem; color: var(--teal); font-weight: 700; margin: 10px auto; min-height: 24px; text-align: center; max-width: 900px; padding: 5px; border-radius: 8px; }
 
         #searchModal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; 
             align-items: center; justify-content: center; z-index: 200; padding: 20px;
         }
         .modal-content { 
             background: white; border-radius: 20px; width: 100%; max-width: 500px; 
-            max-height: 80vh; overflow-y: auto; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 80vh; overflow-y: auto; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
         .search-result-item {
-            padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            padding: 14px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600;
         }
-        .search-result-item:hover { background: var(--salmon-light); }
+        .search-result-item:hover { background: var(--salmon-light); color: var(--text); }
 
         /* FITXA DINÀMICA */
         .fitxa { 
@@ -62,96 +62,87 @@
             overflow: hidden; 
             max-width: 900px; 
             margin: 0 auto; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.12); 
+            box-shadow: 0 4px 25px rgba(0,0,0,0.15); 
             border: 4px solid var(--salmon); 
             position: relative; 
-            transition: background-color 0.4s ease, border-color 0.4s ease;
+            transition: all 0.4s ease;
         }
         
         .fitxa-header { 
-            background: rgba(255, 255, 255, 0.5); 
+            background: white; 
             padding: 16px; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 12px; 
             border-bottom: 2px solid var(--salmon); 
             flex-wrap: wrap; 
-            transition: border-color 0.4s ease;
         }
         
-        .nom-joc-wrap { flex: 1; min-width: 250px; position: relative; }
-        .nom-joc-input { width: 100%; font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 700; border: 2px solid var(--text); border-radius: 10px; padding: 8px 14px; background: white; outline: none; }
+        .nom-joc-wrap { flex: 1; min-width: 250px; }
+        .nom-joc-input { 
+            width: 100%; font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 800; 
+            border: 3px solid var(--text); border-radius: 12px; padding: 10px 16px; 
+            background: white; outline: none; color: var(--text);
+        }
         
-        .meta-pill { display: flex; align-items: center; gap: 5px; background: white; border: 2px solid var(--border); border-radius: 10px; padding: 6px 12px; font-size: .85rem; font-weight: 700; }
+        .meta-pill { display: flex; align-items: center; gap: 5px; background: white; border: 2px solid var(--text); border-radius: 10px; padding: 6px 12px; font-size: .85rem; font-weight: 800; }
         
-        .grup-selector-wrap { position: relative; }
         .grup-select { 
             appearance: none; -webkit-appearance: none;
             background: var(--color-P); color: white; font-family: 'Fredoka One', cursive; 
-            font-size: 1.3rem; width: 44px; height: 44px; border-radius: 50%; 
+            font-size: 1.4rem; width: 48px; height: 48px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; text-align: center;
-            border: 3px solid rgba(255,255,255,0.5); cursor: pointer; outline: none;
-            transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 3px solid var(--text); cursor: pointer; outline: none;
+            transition: all 0.2s; 
         }
-        .grup-select option { font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--text); background: white; }
 
-        .fitxa-body { display: grid; grid-template-columns: 1fr 1fr; }
-        .col-left { padding: 16px; border-right: 2px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; }
-        .col-right { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+        .fitxa-body { display: grid; grid-template-columns: 1fr 1fr; background: inherit; }
+        .col-left { padding: 20px; border-right: 2px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 16px; }
+        .col-right { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
 
-        .imatge-joc { width: 100%; aspect-ratio: 4/3; border-radius: 12px; background: #eee; border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-        .imatge-joc img { width: 100%; height: 100%; object-fit: contain; background: #f9f9f9; }
+        .imatge-joc { width: 100%; aspect-ratio: 4/3; border-radius: 14px; background: white; border: 3px solid var(--text); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .imatge-joc img { width: 100%; height: 100%; object-fit: contain; }
 
-        .url-input-wrap { margin-top: 4px; }
-        .url-input { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 6px; font-size: 0.75rem; font-family: 'Nunito', sans-serif; outline: none; }
-        
-        .box { border: 2px solid var(--text); border-radius: 12px; padding: 12px; background: rgba(255,255,255,0.6); }
-        .box-title { font-weight: 900; font-size: .8rem; margin-bottom: 8px; text-transform: uppercase; color: var(--text); opacity: 0.7; }
-        .checkgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-        .check-item { display: flex; align-items: center; gap: 6px; font-size: .8rem; cursor: pointer; }
+        .box { border: 3px solid var(--text); border-radius: 14px; padding: 15px; background: white; }
+        .box-title { font-weight: 900; font-size: .8rem; margin-bottom: 10px; text-transform: uppercase; color: var(--text); letter-spacing: 0.5px; }
+        .checkgrid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+        .check-item { display: flex; align-items: center; gap: 8px; font-size: .85rem; cursor: pointer; font-weight: 600; }
+        .check-item input { width: 16px; height: 16px; accent-color: var(--teal); }
 
-        .section-label { font-weight: 900; font-size: .85rem; text-transform: uppercase; margin-bottom: 6px; display: block; color: var(--text); opacity: 0.8; }
+        .section-label { font-weight: 900; font-size: .9rem; text-transform: uppercase; margin-bottom: 8px; display: block; color: var(--text); }
         .desc-box, .aplicacions-box, .variants-box { 
-            background: rgba(255,255,255,0.7); border-radius: 10px; padding: 12px; font-size: .9rem; 
-            line-height: 1.6; min-height: 80px; color: var(--text); border: 2px solid transparent; transition: all .2s;
+            background: white; border-radius: 12px; padding: 15px; font-size: .95rem; 
+            line-height: 1.6; min-height: 100px; color: var(--text); border: 3px solid var(--text); transition: all .2s;
         }
-        .desc-box:focus, .aplicacions-box:focus, .variants-box:focus { background: white; border-color: var(--teal); outline: none; box-shadow: 0 0 10px rgba(91,191,181,0.2); }
+        .desc-box:focus, .aplicacions-box:focus, .variants-box:focus { border-color: var(--teal); outline: none; box-shadow: 0 4px 12px rgba(91,191,181,0.2); }
 
-        /* BIBLIOTECA I FILTRES */
-        .fitxes-panel { max-width: 900px; margin: 20px auto; background: white; border-radius: 16px; border: 2px solid var(--border); overflow: hidden; }
-        .panel-header { background: var(--salmon-light); padding: 12px 16px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+        /* BIBLIOTECA */
+        .fitxes-panel { max-width: 900px; margin: 30px auto; background: white; border-radius: 16px; border: 3px solid var(--text); overflow: hidden; }
+        .panel-header { background: var(--text); color: white; padding: 15px 20px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; font-family: 'Fredoka One', cursive; }
         
-        .filter-bar { padding: 12px 16px; background: #fdfdfd; border-bottom: 1px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; align-items: end; }
-        .filter-group { display: flex; flex-direction: column; gap: 4px; }
-        .filter-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; }
-        .filter-input { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.85rem; outline: none; }
+        .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; align-items: end; }
+        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600; outline: none; }
         .filter-input:focus { border-color: var(--teal); }
 
-        .fitxes-list { padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; max-height: 500px; overflow-y: auto; }
-        .card { border: 1px solid #eee; padding: 10px; border-radius: 12px; display: flex; gap: 10px; align-items: center; background: #fafafa; cursor: pointer; transition: all 0.2s; position: relative; }
-        .card:hover { background: var(--salmon-light); transform: scale(1.02); }
-        .card img { width: 60px; height: 60px; border-radius: 8px; object-fit: contain; background: #fff; border: 1px solid #ddd; }
+        .fitxes-list { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; max-height: 600px; overflow-y: auto; }
+        .card { border: 2px solid #eee; padding: 12px; border-radius: 15px; display: flex; gap: 12px; align-items: center; background: white; cursor: pointer; transition: all 0.2s; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card:hover { border-color: var(--salmon); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card img { width: 70px; height: 70px; border-radius: 10px; object-fit: contain; border: 1px solid #ddd; }
         .card-info { flex: 1; }
-        .card-title { font-weight: 800; font-size: 0.9rem; color: var(--text); display: block; }
-        .card-meta { font-size: 0.75rem; color: #666; }
-        .card-grup-tag { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; color: white; display: flex; align-items: center; justify-content: center; font-family: 'Fredoka One', cursive; }
+        .card-title { font-weight: 800; font-size: 0.95rem; color: var(--text); display: block; margin-bottom: 4px; }
+        .card-meta { font-size: 0.8rem; color: #666; font-weight: 600; }
         
-        .admin-footer { position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: white; padding: 10px; display: flex; justify-content: center; gap: 15px; align-items: center; font-size: 0.8rem; z-index: 100; }
+        .admin-footer { position: fixed; bottom: 0; left: 0; right: 0; background: #222; color: white; padding: 12px; display: flex; justify-content: center; gap: 15px; align-items: center; font-size: 0.8rem; z-index: 100; border-top: 2px solid var(--salmon); }
         
-        .spinner { width: 18px; height: 18px; border: 3px solid rgba(0,0,0,0.1); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .spinner { width: 22px; height: 22px; border: 4px solid rgba(255,255,255,0.3); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .etapa-select {
-            width: 100%; margin-bottom: 10px; padding: 5px; border-radius: 6px; border: 1px solid var(--border);
-            font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700;
-        }
-
         @media print {
-            .btn-row, .status, .fitxes-panel, .page-title, .admin-footer, .url-input-wrap, #searchModal, .etapa-select { display: none !important; }
-            body { background: white; padding: 0; margin: 0; overflow: visible; }
-            .fitxa { box-shadow: none; max-width: 100%; border: 2px solid #333; width: 100%; height: auto; position: static; background: white !important; }
-            .grup-select { border: 2px solid #333; color: black !important; background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .fitxa-header, .desc-box, .aplicacions-box, .variants-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .btn-row, .status, .fitxes-panel, .page-title, .admin-footer, .url-input-wrap, #searchModal, .etapa-select, .filter-bar { display: none !important; }
+            body { background: white; padding: 0; margin: 0; }
+            .fitxa { box-shadow: none; border: 4px solid black; width: 100%; height: auto; background: white !important; }
+            .fitxa-header { border-bottom: 2px solid black; }
+            .box, .desc-box, .aplicacions-box, .variants-box, .imatge-joc, .nom-joc-input { border-color: black !important; }
         }
     </style>
 </head>
@@ -161,16 +152,16 @@
 
     <div id="searchModal">
         <div class="modal-content">
-            <h3 style="margin-bottom: 15px; font-family: 'Fredoka One', cursive; color: var(--salmon);">Versions a la BGG:</h3>
+            <h3 style="margin-bottom: 15px; font-family: 'Fredoka One', cursive; color: var(--salmon);">Resultats BGG:</h3>
             <div id="searchResultsList"></div>
-            <button class="btn" onclick="document.getElementById('searchModal').style.display='none'" style="margin-top: 15px; width: 100%; background: #eee;">Cancel·lar</button>
+            <button class="btn" onclick="document.getElementById('searchModal').style.display='none'" style="margin-top: 20px; width: 100%; background: #eee; font-weight: 800;">TANCAR</button>
         </div>
     </div>
 
     <div class="fitxa" id="fitxaActual">
         <div class="fitxa-header" id="fitxaHeader">
             <div class="nom-joc-wrap">
-                <input class="nom-joc-input" id="nomJoc" type="text" placeholder="Cerca un joc i prem ENTER..." autocomplete="off">
+                <input class="nom-joc-input" id="nomJoc" type="text" placeholder="Escriu el nom i prem ENTER..." autocomplete="off">
             </div>
             <div class="meta-pill">👥 <span id="jugadorsVal" contenteditable="true">-</span></div>
             <div class="meta-pill">⏳ <span id="tempsVal" contenteditable="true">-</span></div>
@@ -186,63 +177,60 @@
             </div>
         </div>
 
-        <div class="fitxa-body">
+        <div class="fitxa-body" id="fitxaBody">
             <div class="col-left">
                 <div class="imatge-joc" id="imatgeWrap">
-                    <div id="imgPlaceholder">📸 Imatge BGG</div>
+                    <div id="imgPlaceholder" style="font-weight: 800; color: #888;">📸 SENSE IMATGE</div>
                 </div>
                 <div class="url-input-wrap">
-                    <input type="text" id="manualUrl" class="url-input" placeholder="URL d'imatge manual...">
+                    <input type="text" id="manualUrl" class="filter-input" style="width: 100%; font-size: 0.7rem;" placeholder="URL d'imatge manual...">
                 </div>
                 <div class="box">
-                    <div class="box-title">Àrees Curriculars (Decret 175/2022)</div>
-                    <select id="etapaSelect" class="etapa-select">
+                    <div class="box-title">Àrees Curriculars</div>
+                    <select id="etapaSelect" class="filter-input" style="width: 100%; margin-bottom: 12px; background: var(--salmon-light);">
                         <option value="primaria">Educació Primària</option>
                         <option value="eso">Educació Secundària (ESO)</option>
                     </select>
-                    <div class="checkgrid" id="areasGrid">
-                        <!-- Es carregarà dinàmicament -->
-                    </div>
+                    <div class="checkgrid" id="areasGrid"></div>
                 </div>
             </div>
 
             <div class="col-right">
                 <label class="section-label">Descripció Pedagògica</label>
-                <div class="desc-box" id="descripcio" contenteditable="true"></div>
+                <div class="desc-box" id="descripcio" contenteditable="true" placeholder="Objectius, mecàniques..."></div>
                 
                 <label class="section-label">Aplicació a l'Aula</label>
-                <div class="aplicacions-box" id="aplicacions" contenteditable="true"></div>
+                <div class="aplicacions-box" id="aplicacions" contenteditable="true" placeholder="Com l'utilitzarem..."></div>
             </div>
         </div>
-        <div style="padding: 16px; border-top: 2px solid rgba(0,0,0,0.05)">
+        <div style="padding: 20px; border-top: 2px solid rgba(0,0,0,0.05); background: inherit;">
             <label class="section-label">Variants i Adaptacions (DUA)</label>
-            <div class="variants-box" id="variants" contenteditable="true"></div>
+            <div class="variants-box" id="variants" contenteditable="true" placeholder="Diversitat, nivells..."></div>
         </div>
     </div>
 
     <div id="statusMsg" class="status"></div>
 
     <div class="btn-row">
-        <button class="btn btn-nova" id="btnNova">✨ Nova Fitxa</button>
-        <button class="btn btn-desar" id="btnGuardar">💾 Desar al Núvol</button>
-        <button class="btn btn-print" id="btnPrint">🖨️ Imprimir</button>
-        <button class="btn btn-delete" id="btnDelete">🗑️ Esborrar</button>
+        <button class="btn btn-nova" id="btnNova">✨ NOU JOC</button>
+        <button class="btn btn-desar" id="btnGuardar">💾 DESAR CANVIS</button>
+        <button class="btn btn-print" id="btnPrint">🖨️ IMPRIMIR FITXA</button>
+        <button class="btn btn-delete" id="btnDelete">🗑️ ESBORRAR</button>
     </div>
 
     <div class="fitxes-panel">
         <div class="panel-header">
-            <span>📚 Biblioteca Verificada</span>
-            <span id="counter" style="font-size: 0.8rem; font-weight: normal"></span>
+            <span>📚 BIBLIOTECA DE CENTRE</span>
+            <span id="counter" style="font-size: 0.8rem; opacity: 0.8;"></span>
         </div>
         
-        <!-- Barra de Filtres -->
         <div class="filter-bar">
             <div class="filter-group">
-                <label class="filter-label">Nom del joc</label>
-                <input type="text" id="filterNom" class="filter-input" placeholder="Cerca...">
+                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Cerca per nom</label>
+                <input type="text" id="filterNom" class="filter-input" placeholder="Nom...">
             </div>
             <div class="filter-group">
-                <label class="filter-label">Grup</label>
+                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Grup</label>
                 <select id="filterGrup" class="filter-input">
                     <option value="">Tots</option>
                     <option value="P">P - Petits</option>
@@ -252,19 +240,18 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label class="filter-label">Àrea Curricular</label>
+                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Àrea</label>
                 <select id="filterArea" class="filter-input">
                     <option value="">Totes</option>
-                    <!-- Dinàmic -->
                 </select>
             </div>
             <div class="filter-group">
-                <label class="filter-label">Edat</label>
-                <input type="text" id="filterEdat" class="filter-input" placeholder="+8, 10...">
+                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Edat</label>
+                <input type="text" id="filterEdat" class="filter-input" placeholder="+8...">
             </div>
             <div class="filter-group">
-                <label class="filter-label">Temps</label>
-                <input type="text" id="filterTemps" class="filter-input" placeholder="30, 45min...">
+                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Temps</label>
+                <input type="text" id="filterTemps" class="filter-input" placeholder="30 min...">
             </div>
         </div>
 
@@ -273,8 +260,8 @@
 
     <div class="admin-footer">
         <span>Admin:</span>
-        <input type="password" id="adminPass" placeholder="Clau...">
-        <span id="myUid" style="opacity: 0.5; font-size: 0.6rem;"></span>
+        <input type="password" id="adminPass" style="background:#444; border:none; color:white; padding:4px 8px; border-radius:4px;" placeholder="Password...">
+        <span id="myUid" style="opacity: 0.4; font-size: 0.6rem;"></span>
     </div>
 
 <script type="module">
@@ -282,12 +269,18 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
+    // Configuració de seguretat per a GitHub/Preview
     const apiKey = ""; 
-    const firebaseConfig = JSON.parse(__firebase_config);
+    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+    if (!firebaseConfig.apiKey) {
+        console.error("Firebase config no trobada. L'aplicació podria no funcionar correctament.");
+    }
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
     let currentImageUrl = null;
     let currentUser = null;
@@ -300,55 +293,50 @@
             "Llengua Castellana i Literatura",
             "Llengua Estrangera",
             "Matemàtiques",
-            "Coneixement del Medi Natural, Social i Cultural",
-            "Educació Artística (Plàstica, Música i Dansa)",
+            "Medi Natural, Social i Cultural",
+            "Educació Artística",
             "Educació Física",
-            "Educació en Valors Cívics i Ètics"
+            "Valors Cívics i Ètics"
         ],
         eso: [
             "Llengua Catalana i Literatura",
             "Llengua Castellana i Literatura",
             "Llengua Estrangera",
             "Matemàtiques",
-            "Ciències de la Naturalesa (Bio i Geo / Fis i Quim)",
+            "Física i Química / Biologia",
             "Geografia i Història",
             "Educació Física",
-            "Educació en Valors Cívics i Ètics",
-            "Educació Artística (Plàstica / Música)",
             "Tecnologia i Digitalització",
-            "Llengua de Signes Catalana"
+            "Valors Cívics i Ètics",
+            "Música / Plàstica"
         ]
     };
 
     function loadAreasUI(etapa) {
         const grid = document.getElementById('areasGrid');
-        const filterArea = document.getElementById('filterArea');
-        
         grid.innerHTML = '';
-        const llista = areesCurriculars[etapa] || [];
-        
-        llista.forEach(area => {
+        (areesCurriculars[etapa] || []).forEach(area => {
             const label = document.createElement('label');
             label.className = 'check-item';
             label.innerHTML = `<input type="checkbox" value="${area}"> ${area}`;
             grid.appendChild(label);
         });
 
+        // Actualitzar filtre superior
+        const filterArea = document.getElementById('filterArea');
         const totesLesArees = [...new Set([...areesCurriculars.primaria, ...areesCurriculars.eso])].sort();
         filterArea.innerHTML = '<option value="">Totes</option>';
         totesLesArees.forEach(area => {
             const opt = document.createElement('option');
-            opt.value = area;
-            opt.textContent = area;
+            opt.value = area; opt.textContent = area;
             filterArea.appendChild(opt);
         });
     }
 
-    function showStatus(m, c) {
+    function showStatus(msg, type) {
         const s = document.getElementById('statusMsg');
-        if (!s) return;
-        s.innerHTML = m;
-        s.style.color = (c === 'teal' || c === 'green') ? '#5bbfb5' : (c === 'orange' ? '#f5c842' : '#ff6b6b');
+        s.innerHTML = msg;
+        s.style.color = type === 'red' ? 'var(--danger)' : (type === 'orange' ? 'var(--yellow)' : 'var(--teal)');
     }
 
     const initAuth = async () => {
@@ -358,65 +346,36 @@
             } else {
                 await signInAnonymously(auth);
             }
-        } catch (error) {
-            console.error("Auth Error:", error);
-            showStatus("Error d'autenticació.", "red");
+        } catch (e) {
+            console.error("Auth Fail:", e);
         }
     };
 
     function updateGrupColor(val) {
-        const selectEl = document.getElementById('grupSelect');
-        const fitxaEl = document.getElementById('fitxaActual');
-        const headerEl = document.getElementById('fitxaHeader');
+        const fitxa = document.getElementById('fitxaActual');
+        const header = document.getElementById('fitxaHeader');
+        const select = document.getElementById('grupSelect');
+        const body = document.getElementById('fitxaBody');
 
-        if (selectEl) selectEl.style.backgroundColor = `var(--color-${val})`;
-        if (fitxaEl) {
-            fitxaEl.style.backgroundColor = `var(--color-${val}-bg)`;
-            fitxaEl.style.borderColor = `var(--color-${val})`;
-        }
-        if (headerEl) {
-            headerEl.style.borderBottomColor = `var(--color-${val})`;
-        }
+        select.style.backgroundColor = `var(--color-${val})`;
+        fitxa.style.borderColor = `var(--color-${val})`;
+        fitxa.style.backgroundColor = `var(--color-${val}-bg)`;
+        header.style.borderBottomColor = `var(--color-${val})`;
     }
 
     function updateImageUI(url) {
         currentImageUrl = url;
         const wrap = document.getElementById('imatgeWrap');
-        const manualInput = document.getElementById('manualUrl');
-        
         if (url) {
             wrap.innerHTML = `<img src="${url}" id="imgDisplay" crossorigin="anonymous">`;
             const img = document.getElementById('imgDisplay');
             img.onerror = () => {
                 img.src = `https://images.weserv.nl/?url=${encodeURIComponent(url)}`;
-                img.onerror = () => {
-                   wrap.innerHTML = `<div id="imgPlaceholder">⚠️ Error imatge</div>`;
-                };
+                img.onerror = () => wrap.innerHTML = `⚠️ Error imatge`;
             };
         } else {
-            wrap.innerHTML = `<div id="imgPlaceholder">📸 Imatge BGG</div>`;
+            wrap.innerHTML = `<div id="imgPlaceholder">📸 SENSE IMATGE</div>`;
         }
-        if (manualInput) manualInput.value = url || '';
-    }
-
-    async function callGemini(prompt, schema) {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                systemInstruction: { parts: [{ text: "Ets un expert en jocs de taula i currículum català (LOMLOE). Respon en català." }] },
-                tools: [{ "google_search": {} }],
-                generationConfig: { 
-                    responseMimeType: "application/json",
-                    responseSchema: schema
-                }
-            })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error.message);
-        return JSON.parse(data.candidates[0].content.parts[0].text);
     }
 
     async function searchBGG(gameName) {
@@ -439,37 +398,33 @@
                     }
                 }
             };
-            
-            const json = await callGemini(`Cerca les versions del joc "${gameName}" a la BoardGameGeek. Retorna bggId, nom oficial i any.`, schema);
+            const json = await callGemini(`Cerca el joc de taula "${gameName}" i retorna els IDs de BoardGameGeek.`, schema);
             const items = json.results || [];
+            
+            if (!items.length) return showStatus("No trobat.", "red");
 
-            if (items.length === 0) return showStatus("No s'ha trobat cap resultat.", "red");
-
-            const modal = document.getElementById('searchModal');
             const list = document.getElementById('searchResultsList');
             list.innerHTML = '';
-            
-            items.forEach(item => {
+            items.forEach(it => {
                 const div = document.createElement('div');
                 div.className = 'search-result-item';
-                div.innerHTML = `<span>${item.name} (${item.year})</span> ➕`;
+                div.innerHTML = `<span>${it.name} (${it.year})</span> ➡️`;
                 div.onclick = () => {
-                    modal.style.display = 'none';
-                    loadGameDetails(item.bggId, item.name);
+                    document.getElementById('searchModal').style.display = 'none';
+                    loadGameDetails(it.bggId, it.name);
                 };
                 list.appendChild(div);
             });
-            modal.style.display = 'flex';
+            document.getElementById('searchModal').style.display = 'flex';
             showStatus("Selecciona una versió", "teal");
-        } catch (e) { 
-            console.error(e);
-            showStatus("Error en la cerca.", "red"); 
+        } catch (e) {
+            showStatus("Error de cerca.", "red");
         }
     }
 
-    async function loadGameDetails(bggId, selectedName) {
-        showStatus('<div class="spinner"></div> Carregant detalls...', 'teal');
-        const etapaActual = document.getElementById('etapaSelect').value;
+    async function loadGameDetails(bggId, name) {
+        showStatus('<div class="spinner"></div> Analitzant dades pedagògiques...', 'teal');
+        const etapa = document.getElementById('etapaSelect').value;
         try {
             const schema = {
                 type: "OBJECT",
@@ -479,31 +434,99 @@
                     time: { type: "STRING" },
                     age: { type: "STRING" },
                     imageUrl: { type: "STRING" },
-                    descPedagogica: { type: "STRING" },
-                    aplicacioAula: { type: "STRING" }
+                    desc: { type: "STRING" },
+                    edu: { type: "STRING" }
                 }
             };
-
-            const json = await callGemini(`Dades bggId ${bggId}. Explica aplicacions a l'aula per a l'etapa de ${etapaActual} segons el Decret 175/2022 català.`, schema);
-
-            document.getElementById('nomJoc').value = json.name || selectedName;
-            document.getElementById('jugadorsVal').innerText = json.players || '-';
-            document.getElementById('tempsVal').innerText = json.time || '-';
-            document.getElementById('edatVal').innerText = json.age || '-';
-            document.getElementById('descripcio').innerText = json.descPedagogica || '';
-            document.getElementById('aplicacions').innerText = json.aplicacioAula || '';
-            updateImageUI(json.imageUrl);
-            showStatus('Dades carregades correctament.', 'teal');
-        } catch (e) { 
-            console.error(e);
-            showStatus("Error carregant detalls.", "red"); 
+            const res = await callGemini(`ID BGG: ${bggId}. Detalla el joc per l'etapa ${etapa}.`, schema);
+            
+            document.getElementById('nomJoc').value = res.name || name;
+            document.getElementById('jugadorsVal').innerText = res.players || '-';
+            document.getElementById('tempsVal').innerText = res.time || '-';
+            document.getElementById('edatVal').innerText = res.age || '-';
+            document.getElementById('descripcio').innerText = res.desc || '';
+            document.getElementById('aplicacions').innerText = res.edu || '';
+            updateImageUI(res.imageUrl);
+            showStatus("Dades carregades!", "teal");
+        } catch (e) {
+            showStatus("Error carregant detalls.", "red");
         }
     }
 
-    async function saveGame() {
-        if (!currentUser) return showStatus('Error: Usuari no identificat', 'red');
+    async function callGemini(prompt, schema) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const res = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { responseMimeType: "application/json", responseSchema: schema }
+            })
+        });
+        const d = await res.json();
+        return JSON.parse(d.candidates[0].content.parts[0].text);
+    }
+
+    function renderList() {
+        const list = document.getElementById('fitxesList');
+        const fNom = document.getElementById('filterNom').value.toLowerCase();
+        const fGrup = document.getElementById('filterGrup').value;
+        const fArea = document.getElementById('filterArea').value;
+        const fEdat = document.getElementById('filterEdat').value.toLowerCase();
+        const fTemps = document.getElementById('filterTemps').value.toLowerCase();
+
+        const filtered = allGames.filter(g => {
+            return g.nom.toLowerCase().includes(fNom) &&
+                   (fGrup === "" || g.grup === fGrup) &&
+                   (fArea === "" || (g.areas && g.areas.includes(fArea))) &&
+                   (fEdat === "" || g.edat.toLowerCase().includes(fEdat)) &&
+                   (fTemps === "" || g.temps.toLowerCase().includes(fTemps));
+        });
+
+        list.innerHTML = '';
+        document.getElementById('counter').innerText = `${filtered.length} jocs a la biblioteca`;
+        
+        filtered.forEach(g => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${g.imatge || 'https://placehold.co/70x70?text=JOC'}">
+                <div class="card-info">
+                    <span class="card-title">${g.nom}</span>
+                    <span class="card-meta">Grup ${g.grup} • ${g.edat} • ${g.temps}</span>
+                </div>
+            `;
+            card.onclick = () => {
+                currentDocId = g.id;
+                fillForm(g);
+                document.getElementById('btnDelete').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            list.appendChild(card);
+        });
+    }
+
+    function fillForm(g) {
+        document.getElementById('nomJoc').value = g.nom;
+        document.getElementById('jugadorsVal').innerText = g.jugadors;
+        document.getElementById('tempsVal').innerText = g.temps;
+        document.getElementById('edatVal').innerText = g.edat;
+        document.getElementById('grupSelect').value = g.grup;
+        updateGrupColor(g.grup);
+        document.getElementById('descripcio').innerText = g.descripcio || '';
+        document.getElementById('aplicacions').innerText = g.aplicacions || '';
+        document.getElementById('variants').innerText = g.variants || '';
+        updateImageUI(g.imatge);
+        loadAreasUI(g.etapa || 'primaria');
+        document.getElementById('etapaSelect').value = g.etapa || 'primaria';
+        setTimeout(() => {
+            document.querySelectorAll('#areasGrid input').forEach(c => c.checked = g.areas?.includes(c.value));
+        }, 100);
+    }
+
+    async function save() {
+        if (!currentUser) return;
         const nom = document.getElementById('nomJoc').value.trim();
-        if (!nom) return showStatus('El nom és obligatori', 'orange');
+        if (!nom) return showStatus("Cal un nom!", "orange");
 
         const data = {
             nom,
@@ -517,103 +540,20 @@
             variants: document.getElementById('variants').innerText,
             imatge: currentImageUrl,
             areas: Array.from(document.querySelectorAll('#areasGrid input:checked')).map(c => c.value),
-            author: currentUser.uid,
-            updatedAt: Date.now()
+            uid: currentUser.uid,
+            updated: Date.now()
         };
 
         try {
+            const col = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
             if (currentDocId) {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data, { merge: true });
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
             } else {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), data);
+                await addDoc(col, data);
             }
-            showStatus('Fitxa desada correctament!', 'teal');
+            showStatus("Desat correctament!", "teal");
             reset();
-        } catch (e) { 
-            console.error(e);
-            showStatus('Error en desar.', 'red'); 
-        }
-    }
-
-    function renderFilteredGames() {
-        const list = document.getElementById('fitxesList');
-        const fNom = document.getElementById('filterNom').value.toLowerCase();
-        const fGrup = document.getElementById('filterGrup').value;
-        const fArea = document.getElementById('filterArea').value;
-        const fEdat = document.getElementById('filterEdat').value.toLowerCase();
-        const fTemps = document.getElementById('filterTemps').value.toLowerCase();
-
-        const filtered = allGames.filter(g => {
-            const matchNom = g.nom.toLowerCase().includes(fNom);
-            const matchGrup = fGrup === "" || g.grup === fGrup;
-            const matchArea = fArea === "" || (g.areas && g.areas.includes(fArea));
-            const matchEdat = fEdat === "" || g.edat.toLowerCase().includes(fEdat);
-            const matchTemps = fTemps === "" || g.temps.toLowerCase().includes(fTemps);
-            
-            return matchNom && matchGrup && matchArea && matchEdat && matchTemps;
-        });
-
-        list.innerHTML = '';
-        document.getElementById('counter').innerText = `${filtered.length} fitxes filtrades`;
-        
-        filtered.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            const thumb = item.imatge ? `https://images.weserv.nl/?url=${encodeURIComponent(item.imatge)}&w=60&h=60&fit=cover` : 'https://placehold.co/60x60?text=?';
-            
-            card.innerHTML = `
-                <div class="card-grup-tag" style="background: var(--color-${item.grup})">${item.grup}</div>
-                <img src="${thumb}">
-                <div class="card-info">
-                    <span class="card-title">${item.nom}</span>
-                    <span class="card-meta">${item.jugadors} jug. • ${item.temps} • ${item.edat}</span><br>
-                    <span class="card-meta" style="font-size: 0.65rem; color: var(--teal)">${item.etapa === 'eso' ? 'ESO' : 'Primària'}</span>
-                </div>
-            `;
-            
-            card.onclick = () => {
-                currentDocId = item.id;
-                fillForm(item);
-                document.getElementById('btnDelete').style.display = 'flex';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-            list.appendChild(card);
-        });
-    }
-
-    function loadGames() {
-        if (!currentUser) return;
-        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), (snap) => {
-            allGames = [];
-            snap.forEach(d => {
-                allGames.push({ id: d.id, ...d.data() });
-            });
-            renderFilteredGames();
-        }, (err) => console.error(err));
-    }
-
-    function fillForm(g) {
-        document.getElementById('nomJoc').value = g.nom || '';
-        document.getElementById('jugadorsVal').innerText = g.jugadors || '-';
-        document.getElementById('tempsVal').innerText = g.temps || '-';
-        document.getElementById('edatVal').innerText = g.edat || '-';
-        document.getElementById('grupSelect').value = g.grup || 'P';
-        updateGrupColor(g.grup || 'P');
-        
-        const etapa = g.etapa || 'primaria';
-        document.getElementById('etapaSelect').value = etapa;
-        loadAreasUI(etapa);
-
-        document.getElementById('descripcio').innerText = g.descripcio || '';
-        document.getElementById('aplicacions').innerText = g.aplicacions || '';
-        document.getElementById('variants').innerText = g.variants || '';
-        updateImageUI(g.imatge);
-        
-        setTimeout(() => {
-            document.querySelectorAll('#areasGrid input').forEach(c => c.checked = g.areas?.includes(c.value));
-        }, 50);
-
-        showStatus('Editant: ' + g.nom, 'teal');
+        } catch (e) { showStatus("Error al desar.", "red"); }
     }
 
     function reset() {
@@ -625,55 +565,48 @@
         document.getElementById('descripcio').innerText = '';
         document.getElementById('aplicacions').innerText = '';
         document.getElementById('variants').innerText = '';
-        document.getElementById('grupSelect').value = 'P';
-        updateGrupColor('P');
         updateImageUI('');
-        loadAreasUI(document.getElementById('etapaSelect').value);
         document.getElementById('btnDelete').style.display = 'none';
-        showStatus('', 'teal');
     }
 
-    const initApp = async () => {
+    // Inicialització d'esdeveniments
+    document.getElementById('nomJoc').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchBGG(e.target.value);
+    });
+
+    document.getElementById('btnGuardar').onclick = save;
+    document.getElementById('btnNova').onclick = reset;
+    document.getElementById('btnPrint').onclick = () => window.print();
+    document.getElementById('grupSelect').onchange = (e) => updateGrupColor(e.target.value);
+    document.getElementById('etapaSelect').onchange = (e) => loadAreasUI(e.target.value);
+    document.getElementById('manualUrl').onchange = (e) => updateImageUI(e.target.value);
+
+    ['filterNom', 'filterGrup', 'filterArea', 'filterEdat', 'filterTemps'].forEach(id => {
+        document.getElementById(id).addEventListener('input', renderList);
+    });
+
+    document.getElementById('btnDelete').onclick = async () => {
+        if (currentDocId && confirm("Esborrar?")) {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
+            reset();
+        }
+    };
+
+    window.onload = async () => {
+        loadAreasUI('primaria');
+        updateGrupColor('P');
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
                 document.getElementById('myUid').innerText = user.uid;
-                loadGames();
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), (snap) => {
+                    allGames = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                    renderList();
+                });
             }
         });
-
-        document.getElementById('nomJoc').onkeypress = (e) => { 
-            if(e.key === 'Enter') searchBGG(e.target.value); 
-        };
-        
-        document.getElementById('btnNova').onclick = reset;
-        document.getElementById('btnGuardar').onclick = saveGame;
-        document.getElementById('btnPrint').onclick = () => window.print();
-        
-        document.getElementById('grupSelect').onchange = (e) => updateGrupColor(e.target.value);
-        document.getElementById('manualUrl').onchange = (e) => updateImageUI(e.target.value);
-        document.getElementById('etapaSelect').onchange = (e) => loadAreasUI(e.target.value);
-
-        // Listeners de filtres de biblioteca separats
-        ['filterNom', 'filterGrup', 'filterArea', 'filterEdat', 'filterTemps'].forEach(id => {
-            document.getElementById(id).addEventListener('input', renderFilteredGames);
-        });
-
-        document.getElementById('btnDelete').onclick = async () => {
-            if (currentDocId && confirm('Esborrar fitxa?')) {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
-                reset();
-                showStatus('Esborrat.', 'orange');
-            }
-        };
-
-        loadAreasUI('primaria');
-        updateGrupColor('P');
         await initAuth();
     };
-
-    window.onload = initApp;
-
 </script>
 </body>
 </html>
