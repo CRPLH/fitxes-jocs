@@ -17,15 +17,10 @@
             --border: #d0b8b0;
             --white: #fff;
             
-            /* Colors per als grups */
-            --color-P: #ff6b6b;
-            --color-P-bg: #fff5f5;
-            --color-M: #f5c842;
-            --color-M-bg: #fffdf5;
-            --color-G: #5bbfb5;
-            --color-G-bg: #f5fcfb;
-            --color-J: #9b7fd4;
-            --color-J-bg: #f9f7fe;
+            --color-P: #ff6b6b; --color-P-bg: #fff5f5;
+            --color-M: #f5c842; --color-M-bg: #fffdf5;
+            --color-G: #5bbfb5; --color-G-bg: #f5fcfb;
+            --color-J: #9b7fd4; --color-J-bg: #f9f7fe;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Nunito', sans-serif; background: #f0ebe6; min-height: 100vh; padding: 16px; color: var(--text); padding-bottom: 80px; }
@@ -55,35 +50,31 @@
         }
         .search-result-item:hover { background: var(--salmon-light); color: var(--text); }
 
-        /* FITXA DINÀMICA */
         .fitxa { 
-            background: var(--white); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            box-shadow: 0 4px 25px rgba(0,0,0,0.15); 
-            border: 4px solid var(--salmon); 
-            position: relative; 
-            transition: all 0.4s ease;
+            background: var(--white); border-radius: 16px; overflow: hidden; max-width: 900px; 
+            margin: 0 auto; box-shadow: 0 4px 25px rgba(0,0,0,0.15); border: 4px solid var(--salmon); 
+            position: relative; transition: all 0.4s ease;
         }
         
         .fitxa-header { 
-            background: white; 
-            padding: 16px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            border-bottom: 2px solid var(--salmon); 
-            flex-wrap: wrap; 
+            background: white; padding: 16px; display: flex; align-items: center; 
+            gap: 12px; border-bottom: 2px solid var(--salmon); flex-wrap: wrap; 
         }
         
-        .nom-joc-wrap { flex: 1; min-width: 250px; }
+        .nom-joc-wrap { flex: 1; min-width: 250px; position: relative; }
         .nom-joc-input { 
             width: 100%; font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 800; 
             border: 3px solid var(--text); border-radius: 12px; padding: 10px 16px; 
             background: white; outline: none; color: var(--text);
         }
+
+        .searching-indicator {
+            position: absolute; top: 100%; left: 0; right: 0; background: var(--text);
+            color: white; font-size: 0.75rem; padding: 4px 12px; border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px; font-weight: 700; display: none; z-index: 10;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         
         .meta-pill { display: flex; align-items: center; gap: 5px; background: white; border: 2px solid var(--text); border-radius: 10px; padding: 6px 12px; font-size: .85rem; font-weight: 800; }
         
@@ -93,7 +84,6 @@
             font-size: 1.4rem; width: 48px; height: 48px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; text-align: center;
             border: 3px solid var(--text); cursor: pointer; outline: none;
-            transition: all 0.2s; 
         }
 
         .fitxa-body { display: grid; grid-template-columns: 1fr 1fr; background: inherit; }
@@ -104,45 +94,32 @@
         .imatge-joc img { width: 100%; height: 100%; object-fit: contain; }
 
         .box { border: 3px solid var(--text); border-radius: 14px; padding: 15px; background: white; }
-        .box-title { font-weight: 900; font-size: .8rem; margin-bottom: 10px; text-transform: uppercase; color: var(--text); letter-spacing: 0.5px; }
+        .box-title { font-weight: 900; font-size: .8rem; margin-bottom: 10px; text-transform: uppercase; color: var(--text); }
         .checkgrid { display: grid; grid-template-columns: 1fr; gap: 6px; }
         .check-item { display: flex; align-items: center; gap: 8px; font-size: .85rem; cursor: pointer; font-weight: 600; }
-        .check-item input { width: 16px; height: 16px; accent-color: var(--teal); }
-
-        .section-label { font-weight: 900; font-size: .9rem; text-transform: uppercase; margin-bottom: 8px; display: block; color: var(--text); }
+        
         .desc-box, .aplicacions-box, .variants-box { 
             background: white; border-radius: 12px; padding: 15px; font-size: .95rem; 
-            line-height: 1.6; min-height: 100px; color: var(--text); border: 3px solid var(--text); transition: all .2s;
+            line-height: 1.6; min-height: 100px; color: var(--text); border: 3px solid var(--text);
         }
-        .desc-box:focus, .aplicacions-box:focus, .variants-box:focus { border-color: var(--teal); outline: none; box-shadow: 0 4px 12px rgba(91,191,181,0.2); }
 
-        /* BIBLIOTECA */
         .fitxes-panel { max-width: 900px; margin: 30px auto; background: white; border-radius: 16px; border: 3px solid var(--text); overflow: hidden; }
         .panel-header { background: var(--text); color: white; padding: 15px 20px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; font-family: 'Fredoka One', cursive; }
-        
         .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; align-items: end; }
-        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600; outline: none; }
-        .filter-input:focus { border-color: var(--teal); }
+        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600; }
 
         .fitxes-list { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; max-height: 600px; overflow-y: auto; }
-        .card { border: 2px solid #eee; padding: 12px; border-radius: 15px; display: flex; gap: 12px; align-items: center; background: white; cursor: pointer; transition: all 0.2s; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .card:hover { border-color: var(--salmon); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card { border: 2px solid #eee; padding: 12px; border-radius: 15px; display: flex; gap: 12px; align-items: center; background: white; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card:hover { border-color: var(--salmon); transform: translateY(-3px); }
         .card img { width: 70px; height: 70px; border-radius: 10px; object-fit: contain; border: 1px solid #ddd; }
-        .card-info { flex: 1; }
-        .card-title { font-weight: 800; font-size: 0.95rem; color: var(--text); display: block; margin-bottom: 4px; }
-        .card-meta { font-size: 0.8rem; color: #666; font-weight: 600; }
-        
-        .admin-footer { position: fixed; bottom: 0; left: 0; right: 0; background: #222; color: white; padding: 12px; display: flex; justify-content: center; gap: 15px; align-items: center; font-size: 0.8rem; z-index: 100; border-top: 2px solid var(--salmon); }
-        
-        .spinner { width: 22px; height: 22px; border: 4px solid rgba(255,255,255,0.3); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+
+        .spinner { width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media print {
-            .btn-row, .status, .fitxes-panel, .page-title, .admin-footer, .url-input-wrap, #searchModal, .etapa-select, .filter-bar { display: none !important; }
-            body { background: white; padding: 0; margin: 0; }
-            .fitxa { box-shadow: none; border: 4px solid black; width: 100%; height: auto; background: white !important; }
-            .fitxa-header { border-bottom: 2px solid black; }
-            .box, .desc-box, .aplicacions-box, .variants-box, .imatge-joc, .nom-joc-input { border-color: black !important; }
+            .btn-row, .status, .fitxes-panel, .page-title, .admin-footer, .url-input-wrap, #searchModal, .filter-bar, .searching-indicator { display: none !important; }
+            body { background: white; padding: 0; }
+            .fitxa { box-shadow: none; border: 4px solid black; width: 100%; background: white !important; }
         }
     </style>
 </head>
@@ -162,6 +139,9 @@
         <div class="fitxa-header" id="fitxaHeader">
             <div class="nom-joc-wrap">
                 <input class="nom-joc-input" id="nomJoc" type="text" placeholder="Escriu el nom i prem ENTER..." autocomplete="off">
+                <div id="searchingIndicator" class="searching-indicator">
+                    <div class="spinner"></div> Buscant a BoardGameGeek...
+                </div>
             </div>
             <div class="meta-pill">👥 <span id="jugadorsVal" contenteditable="true">-</span></div>
             <div class="meta-pill">⏳ <span id="tempsVal" contenteditable="true">-</span></div>
@@ -183,7 +163,7 @@
                     <div id="imgPlaceholder" style="font-weight: 800; color: #888;">📸 SENSE IMATGE</div>
                 </div>
                 <div class="url-input-wrap">
-                    <input type="text" id="manualUrl" class="filter-input" style="width: 100%; font-size: 0.7rem;" placeholder="URL d'imatge manual...">
+                    <input type="text" id="manualUrl" class="filter-input" style="width: 100%; font-size: 0.7rem; margin-top: 8px;" placeholder="URL d'imatge manual...">
                 </div>
                 <div class="box">
                     <div class="box-title">Àrees Curriculars</div>
@@ -196,16 +176,16 @@
             </div>
 
             <div class="col-right">
-                <label class="section-label">Descripció Pedagògica</label>
-                <div class="desc-box" id="descripcio" contenteditable="true" placeholder="Objectius, mecàniques..."></div>
+                <label style="font-weight:900; font-size:.8rem; text-transform:uppercase;">Descripció Pedagògica</label>
+                <div class="desc-box" id="descripcio" contenteditable="true"></div>
                 
-                <label class="section-label">Aplicació a l'Aula</label>
-                <div class="aplicacions-box" id="aplicacions" contenteditable="true" placeholder="Com l'utilitzarem..."></div>
+                <label style="font-weight:900; font-size:.8rem; text-transform:uppercase;">Aplicació a l'Aula</label>
+                <div class="aplicacions-box" id="aplicacions" contenteditable="true"></div>
             </div>
         </div>
         <div style="padding: 20px; border-top: 2px solid rgba(0,0,0,0.05); background: inherit;">
-            <label class="section-label">Variants i Adaptacions (DUA)</label>
-            <div class="variants-box" id="variants" contenteditable="true" placeholder="Diversitat, nivells..."></div>
+            <label style="font-weight:900; font-size:.8rem; text-transform:uppercase;">Variants i Adaptacions (DUA)</label>
+            <div class="variants-box" id="variants" contenteditable="true"></div>
         </div>
     </div>
 
@@ -219,49 +199,16 @@
     </div>
 
     <div class="fitxes-panel">
-        <div class="panel-header">
-            <span>📚 BIBLIOTECA DE CENTRE</span>
-            <span id="counter" style="font-size: 0.8rem; opacity: 0.8;"></span>
-        </div>
-        
+        <div class="panel-header">📚 BIBLIOTECA DE CENTRE <span id="counter" style="font-size: 0.7rem;"></span></div>
         <div class="filter-bar">
-            <div class="filter-group">
-                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Cerca per nom</label>
-                <input type="text" id="filterNom" class="filter-input" placeholder="Nom...">
-            </div>
-            <div class="filter-group">
-                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Grup</label>
-                <select id="filterGrup" class="filter-input">
-                    <option value="">Tots</option>
-                    <option value="P">P - Petits</option>
-                    <option value="M">M - Mitjans</option>
-                    <option value="G">G - Grans</option>
-                    <option value="J">J - Joves</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Àrea</label>
-                <select id="filterArea" class="filter-input">
-                    <option value="">Totes</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Edat</label>
-                <input type="text" id="filterEdat" class="filter-input" placeholder="+8...">
-            </div>
-            <div class="filter-group">
-                <label class="filter-label" style="font-size:0.65rem; font-weight:900;">Temps</label>
-                <input type="text" id="filterTemps" class="filter-input" placeholder="30 min...">
-            </div>
+            <input type="text" id="filterNom" class="filter-input" placeholder="Cerca per nom...">
+            <select id="filterGrup" class="filter-input"><option value="">Tots els grups</option><option value="P">P</option><option value="M">M</option><option value="G">G</option><option value="J">J</option></select>
         </div>
-
         <div class="fitxes-list" id="fitxesList"></div>
     </div>
 
-    <div class="admin-footer">
-        <span>Admin:</span>
-        <input type="password" id="adminPass" style="background:#444; border:none; color:white; padding:4px 8px; border-radius:4px;" placeholder="Password...">
-        <span id="myUid" style="opacity: 0.4; font-size: 0.6rem;"></span>
+    <div class="admin-footer" style="text-align:center; padding:10px; font-size:0.7rem; color:#888;">
+        ID Sessió: <span id="myUid">...</span>
     </div>
 
 <script type="module">
@@ -269,14 +216,10 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    // Configuració de seguretat per a GitHub/Preview
+    // ATENCIÓ: Configura la teva API KEY de Gemini aquí
     const apiKey = ""; 
     const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-    if (!firebaseConfig.apiKey) {
-        console.error("Firebase config no trobada. L'aplicació podria no funcionar correctament.");
-    }
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'fitxes-jocs-default';
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -285,102 +228,38 @@
     let currentImageUrl = null;
     let currentUser = null;
     let currentDocId = null;
-    let allGames = []; 
+    let allGames = [];
+    let unsubscribeLibrary = null;
 
-    const areesCurriculars = {
-        primaria: [
-            "Llengua Catalana i Literatura",
-            "Llengua Castellana i Literatura",
-            "Llengua Estrangera",
-            "Matemàtiques",
-            "Medi Natural, Social i Cultural",
-            "Educació Artística",
-            "Educació Física",
-            "Valors Cívics i Ètics"
-        ],
-        eso: [
-            "Llengua Catalana i Literatura",
-            "Llengua Castellana i Literatura",
-            "Llengua Estrangera",
-            "Matemàtiques",
-            "Física i Química / Biologia",
-            "Geografia i Història",
-            "Educació Física",
-            "Tecnologia i Digitalització",
-            "Valors Cívics i Ètics",
-            "Música / Plàstica"
-        ]
+    const arees = {
+        primaria: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Medi Natural i Social", "Ed. Artística", "Ed. Física", "Valors"],
+        eso: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Física i Química", "Socials", "Ed. Física", "Tecnologia", "Música"]
     };
 
-    function loadAreasUI(etapa) {
+    function loadAreas(etapa) {
         const grid = document.getElementById('areasGrid');
         grid.innerHTML = '';
-        (areesCurriculars[etapa] || []).forEach(area => {
-            const label = document.createElement('label');
-            label.className = 'check-item';
-            label.innerHTML = `<input type="checkbox" value="${area}"> ${area}`;
-            grid.appendChild(label);
-        });
-
-        // Actualitzar filtre superior
-        const filterArea = document.getElementById('filterArea');
-        const totesLesArees = [...new Set([...areesCurriculars.primaria, ...areesCurriculars.eso])].sort();
-        filterArea.innerHTML = '<option value="">Totes</option>';
-        totesLesArees.forEach(area => {
-            const opt = document.createElement('option');
-            opt.value = area; opt.textContent = area;
-            filterArea.appendChild(opt);
+        arees[etapa].forEach(a => {
+            const l = document.createElement('label');
+            l.className = 'check-item';
+            l.innerHTML = `<input type="checkbox" value="${a}"> ${a}`;
+            grid.appendChild(l);
         });
     }
 
-    function showStatus(msg, type) {
-        const s = document.getElementById('statusMsg');
-        s.innerHTML = msg;
-        s.style.color = type === 'red' ? 'var(--danger)' : (type === 'orange' ? 'var(--yellow)' : 'var(--teal)');
+    function toggleLoader(show) {
+        document.getElementById('searchingIndicator').style.display = show ? 'block' : 'none';
+        document.getElementById('nomJoc').disabled = show;
     }
 
-    const initAuth = async () => {
-        try {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
-        } catch (e) {
-            console.error("Auth Fail:", e);
+    async function searchBGG(name) {
+        if (!name.trim()) return;
+        if (!apiKey) {
+            alert("Falta configurar l'API Key de Gemini al codi per cercar.");
+            return;
         }
-    };
 
-    function updateGrupColor(val) {
-        const fitxa = document.getElementById('fitxaActual');
-        const header = document.getElementById('fitxaHeader');
-        const select = document.getElementById('grupSelect');
-        const body = document.getElementById('fitxaBody');
-
-        select.style.backgroundColor = `var(--color-${val})`;
-        fitxa.style.borderColor = `var(--color-${val})`;
-        fitxa.style.backgroundColor = `var(--color-${val}-bg)`;
-        header.style.borderBottomColor = `var(--color-${val})`;
-    }
-
-    function updateImageUI(url) {
-        currentImageUrl = url;
-        const wrap = document.getElementById('imatgeWrap');
-        if (url) {
-            wrap.innerHTML = `<img src="${url}" id="imgDisplay" crossorigin="anonymous">`;
-            const img = document.getElementById('imgDisplay');
-            img.onerror = () => {
-                img.src = `https://images.weserv.nl/?url=${encodeURIComponent(url)}`;
-                img.onerror = () => wrap.innerHTML = `⚠️ Error imatge`;
-            };
-        } else {
-            wrap.innerHTML = `<div id="imgPlaceholder">📸 SENSE IMATGE</div>`;
-        }
-    }
-
-    async function searchBGG(gameName) {
-        if (!gameName.trim()) return;
-        showStatus('<div class="spinner"></div> Buscant a la BGG...', 'teal');
+        toggleLoader(true);
         try {
             const schema = {
                 type: "OBJECT",
@@ -398,32 +277,47 @@
                     }
                 }
             };
-            const json = await callGemini(`Cerca el joc de taula "${gameName}" i retorna els IDs de BoardGameGeek.`, schema);
-            const items = json.results || [];
             
-            if (!items.length) return showStatus("No trobat.", "red");
-
-            const list = document.getElementById('searchResultsList');
-            list.innerHTML = '';
-            items.forEach(it => {
-                const div = document.createElement('div');
-                div.className = 'search-result-item';
-                div.innerHTML = `<span>${it.name} (${it.year})</span> ➡️`;
-                div.onclick = () => {
-                    document.getElementById('searchModal').style.display = 'none';
-                    loadGameDetails(it.bggId, it.name);
-                };
-                list.appendChild(div);
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: `Busca el joc de taula "${name}" i dóna'm el seu ID de BoardGameGeek i nom oficial.` }] }],
+                    generationConfig: { responseMimeType: "application/json", responseSchema: schema }
+                })
             });
-            document.getElementById('searchModal').style.display = 'flex';
-            showStatus("Selecciona una versió", "teal");
+            
+            const data = await res.json();
+            const items = JSON.parse(data.candidates[0].content.parts[0].text).results || [];
+            
+            if (items.length > 0) {
+                const list = document.getElementById('searchResultsList');
+                list.innerHTML = '';
+                items.forEach(it => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    div.innerHTML = `${it.name} (${it.year}) <span>➔</span>`;
+                    div.onclick = () => {
+                        document.getElementById('searchModal').style.display = 'none';
+                        fetchDetails(it.bggId, it.name);
+                    };
+                    list.appendChild(div);
+                });
+                document.getElementById('searchModal').style.display = 'flex';
+            } else {
+                alert("No s'ha trobat cap joc amb aquest nom.");
+            }
         } catch (e) {
-            showStatus("Error de cerca.", "red");
+            console.error(e);
+            alert("Error en la cerca. Revisa la consola.");
+        } finally {
+            toggleLoader(false);
         }
     }
 
-    async function loadGameDetails(bggId, name) {
-        showStatus('<div class="spinner"></div> Analitzant dades pedagògiques...', 'teal');
+    async function fetchDetails(id, name) {
+        toggleLoader(true);
         const etapa = document.getElementById('etapaSelect').value;
         try {
             const schema = {
@@ -438,174 +332,133 @@
                     edu: { type: "STRING" }
                 }
             };
-            const res = await callGemini(`ID BGG: ${bggId}. Detalla el joc per l'etapa ${etapa}.`, schema);
+            const prompt = `Analitza el joc amb ID BGG ${id}. Etapa: ${etapa}. Resumeix objectius pedagògics.`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { responseMimeType: "application/json", responseSchema: schema }
+                })
+            });
+            const d = await res.json();
+            const resData = JSON.parse(d.candidates[0].content.parts[0].text);
             
-            document.getElementById('nomJoc').value = res.name || name;
-            document.getElementById('jugadorsVal').innerText = res.players || '-';
-            document.getElementById('tempsVal').innerText = res.time || '-';
-            document.getElementById('edatVal').innerText = res.age || '-';
-            document.getElementById('descripcio').innerText = res.desc || '';
-            document.getElementById('aplicacions').innerText = res.edu || '';
-            updateImageUI(res.imageUrl);
-            showStatus("Dades carregades!", "teal");
-        } catch (e) {
-            showStatus("Error carregant detalls.", "red");
-        }
+            document.getElementById('nomJoc').value = resData.name;
+            document.getElementById('jugadorsVal').innerText = resData.players;
+            document.getElementById('tempsVal').innerText = resData.time;
+            document.getElementById('edatVal').innerText = resData.age;
+            document.getElementById('descripcio').innerText = resData.desc;
+            document.getElementById('aplicacions').innerText = resData.edu;
+            updateImg(resData.imageUrl);
+        } catch (e) { alert("Error detalls."); }
+        finally { toggleLoader(false); }
     }
 
-    async function callGemini(prompt, schema) {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-        const res = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { responseMimeType: "application/json", responseSchema: schema }
-            })
-        });
-        const d = await res.json();
-        return JSON.parse(d.candidates[0].content.parts[0].text);
+    function updateImg(url) {
+        currentImageUrl = url;
+        const w = document.getElementById('imatgeWrap');
+        w.innerHTML = url ? `<img src="${url}">` : `<div style="color:#888">SENSE IMATGE</div>`;
     }
 
-    function renderList() {
+    function render() {
         const list = document.getElementById('fitxesList');
         const fNom = document.getElementById('filterNom').value.toLowerCase();
         const fGrup = document.getElementById('filterGrup').value;
-        const fArea = document.getElementById('filterArea').value;
-        const fEdat = document.getElementById('filterEdat').value.toLowerCase();
-        const fTemps = document.getElementById('filterTemps').value.toLowerCase();
-
         const filtered = allGames.filter(g => {
-            return g.nom.toLowerCase().includes(fNom) &&
-                   (fGrup === "" || g.grup === fGrup) &&
-                   (fArea === "" || (g.areas && g.areas.includes(fArea))) &&
-                   (fEdat === "" || g.edat.toLowerCase().includes(fEdat)) &&
-                   (fTemps === "" || g.temps.toLowerCase().includes(fTemps));
+            const matchesNom = g.nom.toLowerCase().includes(fNom);
+            const matchesGrup = fGrup === "" || g.grup === fGrup;
+            return matchesNom && matchesGrup;
         });
-
-        list.innerHTML = '';
-        document.getElementById('counter').innerText = `${filtered.length} jocs a la biblioteca`;
         
+        list.innerHTML = '';
         filtered.forEach(g => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <img src="${g.imatge || 'https://placehold.co/70x70?text=JOC'}">
-                <div class="card-info">
-                    <span class="card-title">${g.nom}</span>
-                    <span class="card-meta">Grup ${g.grup} • ${g.edat} • ${g.temps}</span>
-                </div>
-            `;
-            card.onclick = () => {
+            const d = document.createElement('div');
+            d.className = 'card';
+            d.innerHTML = `<img src="${g.imatge || 'https://placehold.co/70'}"><div><b>${g.nom}</b><br><small>Grup ${g.grup}</small></div>`;
+            d.onclick = () => {
                 currentDocId = g.id;
-                fillForm(g);
-                document.getElementById('btnDelete').style.display = 'flex';
+                document.getElementById('nomJoc').value = g.nom;
+                document.getElementById('jugadorsVal').innerText = g.jugadors;
+                document.getElementById('tempsVal').innerText = g.temps;
+                document.getElementById('edatVal').innerText = g.edat;
+                document.getElementById('grupSelect').value = g.grup;
+                document.getElementById('descripcio').innerText = g.descripcio;
+                document.getElementById('aplicacions').innerText = g.aplicacions;
+                updateImg(g.imatge);
+                document.getElementById('btnDelete').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
-            list.appendChild(card);
+            list.appendChild(d);
         });
     }
 
-    function fillForm(g) {
-        document.getElementById('nomJoc').value = g.nom;
-        document.getElementById('jugadorsVal').innerText = g.jugadors;
-        document.getElementById('tempsVal').innerText = g.temps;
-        document.getElementById('edatVal').innerText = g.edat;
-        document.getElementById('grupSelect').value = g.grup;
-        updateGrupColor(g.grup);
-        document.getElementById('descripcio').innerText = g.descripcio || '';
-        document.getElementById('aplicacions').innerText = g.aplicacions || '';
-        document.getElementById('variants').innerText = g.variants || '';
-        updateImageUI(g.imatge);
-        loadAreasUI(g.etapa || 'primaria');
-        document.getElementById('etapaSelect').value = g.etapa || 'primaria';
-        setTimeout(() => {
-            document.querySelectorAll('#areasGrid input').forEach(c => c.checked = g.areas?.includes(c.value));
-        }, 100);
-    }
+    document.getElementById('nomJoc').addEventListener('keydown', e => {
+        if (e.key === 'Enter') searchBGG(e.target.value);
+    });
 
-    async function save() {
-        if (!currentUser) return;
-        const nom = document.getElementById('nomJoc').value.trim();
-        if (!nom) return showStatus("Cal un nom!", "orange");
-
+    document.getElementById('btnGuardar').onclick = async () => {
+        if (!currentUser) { alert("Has d'estar autenticat per desar."); return; }
         const data = {
-            nom,
+            nom: document.getElementById('nomJoc').value,
             jugadors: document.getElementById('jugadorsVal').innerText,
             temps: document.getElementById('tempsVal').innerText,
             edat: document.getElementById('edatVal').innerText,
             grup: document.getElementById('grupSelect').value,
-            etapa: document.getElementById('etapaSelect').value,
             descripcio: document.getElementById('descripcio').innerText,
             aplicacions: document.getElementById('aplicacions').innerText,
-            variants: document.getElementById('variants').innerText,
             imatge: currentImageUrl,
-            areas: Array.from(document.querySelectorAll('#areasGrid input:checked')).map(c => c.value),
-            uid: currentUser.uid,
             updated: Date.now()
         };
-
         try {
             const col = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
-            if (currentDocId) {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
+            if (currentDocId) await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
+            else await addDoc(col, data);
+            alert("Desat correctament!");
+        } catch (e) { console.error(e); alert("Error al desar: " + e.message); }
+    };
+
+    document.getElementById('filterNom').oninput = render;
+    document.getElementById('filterGrup').onchange = render;
+
+    // Inicialització de l'autenticació seguint les regles de l'entorn
+    const initAuth = async () => {
+        try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
             } else {
-                await addDoc(col, data);
+                await signInAnonymously(auth);
             }
-            showStatus("Desat correctament!", "teal");
-            reset();
-        } catch (e) { showStatus("Error al desar.", "red"); }
-    }
-
-    function reset() {
-        currentDocId = null;
-        document.getElementById('nomJoc').value = '';
-        document.getElementById('jugadorsVal').innerText = '-';
-        document.getElementById('tempsVal').innerText = '-';
-        document.getElementById('edatVal').innerText = '-';
-        document.getElementById('descripcio').innerText = '';
-        document.getElementById('aplicacions').innerText = '';
-        document.getElementById('variants').innerText = '';
-        updateImageUI('');
-        document.getElementById('btnDelete').style.display = 'none';
-    }
-
-    // Inicialització d'esdeveniments
-    document.getElementById('nomJoc').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') searchBGG(e.target.value);
-    });
-
-    document.getElementById('btnGuardar').onclick = save;
-    document.getElementById('btnNova').onclick = reset;
-    document.getElementById('btnPrint').onclick = () => window.print();
-    document.getElementById('grupSelect').onchange = (e) => updateGrupColor(e.target.value);
-    document.getElementById('etapaSelect').onchange = (e) => loadAreasUI(e.target.value);
-    document.getElementById('manualUrl').onchange = (e) => updateImageUI(e.target.value);
-
-    ['filterNom', 'filterGrup', 'filterArea', 'filterEdat', 'filterTemps'].forEach(id => {
-        document.getElementById(id).addEventListener('input', renderList);
-    });
-
-    document.getElementById('btnDelete').onclick = async () => {
-        if (currentDocId && confirm("Esborrar?")) {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
-            reset();
+        } catch (error) {
+            console.error("Error d'autenticació:", error);
         }
     };
 
-    window.onload = async () => {
-        loadAreasUI('primaria');
-        updateGrupColor('P');
-        onAuthStateChanged(auth, (user) => {
+    window.onload = () => {
+        loadAreas('primaria');
+        
+        onAuthStateChanged(auth, user => {
             currentUser = user;
             if (user) {
                 document.getElementById('myUid').innerText = user.uid;
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), (snap) => {
-                    allGames = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                    renderList();
-                });
+                
+                // Listener de la biblioteca només si estem autenticats
+                if (unsubscribeLibrary) unsubscribeLibrary();
+                
+                const q = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
+                unsubscribeLibrary = onSnapshot(q, 
+                    (snapshot) => {
+                        allGames = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+                        render();
+                    },
+                    (error) => {
+                        console.error("Error a la biblioteca:", error);
+                    }
+                );
             }
         });
-        await initAuth();
+
+        initAuth();
     };
 </script>
 </body>
