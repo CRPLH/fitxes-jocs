@@ -222,8 +222,7 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    // Configuració de seguretat per entorns externs (GitHub)
-    const apiKey = ""; // L'entorn injectarà la clau automàticament
+    const apiKey = ""; 
     const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{"apiKey":"na","authDomain":"na","projectId":"na"}');
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'jocs-taula-lomloe';
 
@@ -235,14 +234,33 @@
     let currentUser = null;
     let currentDocId = null;
     let allGames = [];
-    let unsubscribeLibrary = null;
 
+    // Àrees actualitzades segons el Currículum de Catalunya (Decret 175/2022)
     const arees = {
-        primaria: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Medi Natural i Social", "Ed. Artística", "Ed. Física"],
-        eso: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Física i Química", "Socials", "Tecnologia"]
+        primaria: [
+            "Llengua Catalana i Literatura", 
+            "Llengua Castellana i Literatura", 
+            "Llengua Estrangera", 
+            "Matemàtiques", 
+            "Coneixement del Medi Natural, Social i Cultural", 
+            "Educació Artística (Plàstica/Música)", 
+            "Educació Física",
+            "Educació en Valors Ètics i Cívics"
+        ],
+        eso: [
+            "Llengua Catalana i Literatura", 
+            "Llengua Castellana i Literatura", 
+            "Llengua Estrangera", 
+            "Matemàtiques", 
+            "Ciències de la Naturalesa (Física/Química/Bio)", 
+            "Geografia i Història", 
+            "Educació Física",
+            "Educació Artística, Visual i Plàstica",
+            "Tecnologia i Digitalització",
+            "Educació en Valors Ètics i Cívics"
+        ]
     };
 
-    // FUNCIÓ CRÍTICA: Actualitza colors de la plantilla
     function actualitzarColors(grup) {
         const fitxa = document.getElementById('fitxaActual');
         const select = document.getElementById('grupSelect');
@@ -264,10 +282,7 @@
     }
 
     async function callGemini(prompt, schema) {
-        if (!apiKey) {
-            console.warn("Falta API Key. Cerca limitada.");
-            return null;
-        }
+        if (!apiKey) return null;
         try {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const res = await fetch(url, {
@@ -333,7 +348,7 @@
             }
         };
 
-        const resData = await callGemini(`Detalla en català el joc BGG ID ${id} per a l'escola.`, schema);
+        const resData = await callGemini(`Detalla en català el joc BGG ID ${id} per a l'escola seguint el currículum català.`, schema);
         indicator.style.display = 'none';
 
         if (resData) {
@@ -383,8 +398,14 @@
         document.getElementById('counter').innerText = `(${filtered.length})`;
     }
 
-    // Events
-    document.getElementById('nomJoc').onkeydown = e => e.key === 'Enter' && searchBGG(e.target.value);
+    // Events corregits per permetre escriptura i cerca amb Enter
+    document.getElementById('nomJoc').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchBGG(e.target.value);
+        }
+    });
+
     document.getElementById('grupSelect').onchange = e => actualitzarColors(e.target.value);
     document.getElementById('etapaSelect').onchange = e => loadAreas(e.target.value);
     document.getElementById('filterNom').oninput = renderLibrary;
@@ -397,6 +418,9 @@
         actualitzarColors('P');
         document.getElementById('btnDelete').style.display = 'none';
         document.getElementById('imatgeWrap').innerHTML = '📸';
+        document.getElementById('descripcio').innerText = '';
+        document.getElementById('aplicacions').innerText = '';
+        document.getElementById('variants').innerText = '';
     };
 
     document.getElementById('btnGuardar').onclick = async () => {
@@ -424,6 +448,13 @@
     };
 
     document.getElementById('btnPrint').onclick = () => window.print();
+    
+    document.getElementById('btnDelete').onclick = async () => {
+        if (currentDocId && confirm("Segur que vols esborrar aquest joc?")) {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
+            document.getElementById('btnNova').click();
+        }
+    };
 
     // Init
     loadAreas('primaria');
