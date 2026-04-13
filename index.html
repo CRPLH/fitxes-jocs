@@ -17,10 +17,11 @@
             --border: #d0b8b0;
             --white: #fff;
             
-            --color-P: #ff6b6b;
-            --color-M: #f5c842;
-            --color-G: #5bbfb5;
-            --color-J: #9b7fd4;
+            /* Colors per grup d'edat */
+            --color-P: #ff6b6b; /* Petit - Vermellós/Salmó */
+            --color-M: #f5c842; /* Mitjà - Groc */
+            --color-G: #5bbfb5; /* Gran - Teula/Verd */
+            --color-J: #9b7fd4; /* Jove - lila */
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Nunito', sans-serif; background: #f0ebe6; min-height: 100vh; padding: 16px; color: var(--text); padding-bottom: 80px; }
@@ -35,8 +36,6 @@
         .btn-print { background: var(--purple); color: white; }
         .btn-delete { background: var(--danger); color: white; display: none; }
         
-        .status { font-size: .85rem; color: var(--teal); font-weight: 700; margin: 10px auto; min-height: 24px; text-align: center; max-width: 900px; padding: 5px; border-radius: 8px; }
-
         #searchModal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; 
             align-items: center; justify-content: center; z-index: 200; padding: 20px;
@@ -52,8 +51,8 @@
 
         .fitxa { 
             background: var(--white); border-radius: 16px; overflow: hidden; max-width: 900px; 
-            margin: 0 auto; box-shadow: 0 4px 25px rgba(0,0,0,0.15); border: 4px solid var(--salmon); 
-            position: relative; transition: border-color 0.3s ease;
+            margin: 0 auto; box-shadow: 0 4px 25px rgba(0,0,0,0.15); border: 6px solid var(--color-P); 
+            position: relative; transition: border-color 0.4s ease;
         }
         
         .fitxa-header { 
@@ -72,19 +71,17 @@
             position: absolute; top: 100%; left: 0; right: 0; background: var(--text);
             color: white; font-size: 0.75rem; padding: 4px 12px; border-bottom-left-radius: 8px;
             border-bottom-right-radius: 8px; font-weight: 700; display: none; z-index: 10;
-            animation: pulse 1.5s infinite;
         }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         
         .meta-pill { display: flex; align-items: center; gap: 5px; background: white; border: 2px solid var(--text); border-radius: 10px; padding: 6px 12px; font-size: .85rem; font-weight: 800; }
         
         .grup-select { 
             appearance: none; -webkit-appearance: none;
             background: var(--color-P); color: white; font-family: 'Fredoka One', cursive; 
-            font-size: 1.4rem; width: 48px; height: 48px; border-radius: 50%; 
+            font-size: 1.4rem; width: 50px; height: 50px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; text-align: center;
             border: 3px solid var(--text); cursor: pointer; outline: none;
-            transition: background 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         .fitxa-body { display: grid; grid-template-columns: 1fr 1fr; background: inherit; }
@@ -110,19 +107,18 @@
         .filter-bar { padding: 15px 20px; background: #fdfdfd; border-bottom: 2px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: end; }
         .filter-block { display: flex; flex-direction: column; gap: 4px; }
         .filter-label { font-size: 0.65rem; font-weight: 900; color: var(--salmon); text-transform: uppercase; letter-spacing: 0.5px; }
-        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; width: 100%; background: white; transition: border-color 0.2s; }
-        .filter-input:focus { border-color: var(--salmon); outline: none; }
+        .filter-input { padding: 8px 12px; border-radius: 10px; border: 2px solid var(--border); font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; width: 100%; background: white; }
 
         .fitxes-list { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; max-height: 600px; overflow-y: auto; }
-        .card { border: 2px solid #eee; padding: 12px; border-radius: 15px; display: flex; gap: 12px; align-items: center; background: white; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card { border: 2px solid #eee; padding: 12px; border-radius: 15px; display: flex; gap: 12px; align-items: center; background: white; cursor: pointer; transition: all 0.2s; }
         .card:hover { border-color: var(--salmon); transform: translateY(-3px); }
-        .card img { width: 70px; height: 70px; border-radius: 10px; object-fit: contain; border: 1px solid #ddd; }
+        .card img { width: 60px; height: 60px; border-radius: 8px; object-fit: contain; border: 1px solid #ddd; }
 
-        .spinner { width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+        .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; margin-right: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media print {
-            .btn-row, .status, .fitxes-panel, .page-title, .admin-footer, .url-input-wrap, #searchModal, .filter-bar, .searching-indicator { display: none !important; }
+            .btn-row, .fitxes-panel, .page-title, .admin-footer, .url-input-wrap, #searchModal, .filter-bar, .searching-indicator { display: none !important; }
             body { background: white; padding: 0; }
             .fitxa { box-shadow: none; border: 4px solid black; width: 100%; background: white !important; }
         }
@@ -130,30 +126,83 @@
 </head>
 <body>
 
-    <p class="page-title">🕹️ Recull de Jocs BGG - Catalunya Educació</p>
+    <p class="page-title">🕹️ Recull de Jocs BGG - Catalunya</p>
 
     <div id="searchModal">
         <div class="modal-content">
-            <h3 style="margin-bottom: 15px; font-family: 'Fredoka One', cursive; color: var(--salmon);">Resultats BGG:</h3>
+            <h3 style="margin-bottom: 15px; font-family: 'Fredoka One', cursive; color: var(--salmon);">Resultats de cerca:</h3>
             <div id="searchResultsList"></div>
-            <button class="btn" onclick="document.getElementById('searchModal').style.display='none'" style="margin-top: 20px; width: 100%; background: #eee; font-weight: 800;">TANCAR</button>
+            <button class="btn" onclick="document.getElementById('searchModal').style.display='none'" style="margin-top: 20px; width: 100%; background: #eee;">TANCAR</button>
         </div>
     </div>
 
     <div class="fitxa" id="fitxaActual">
-        <div class="fitxa-header" id="fitxaHeader">
+        <div class="fitxa-header">
             <div class="nom-joc-wrap">
-                <input class="nom-joc-input" id="nomJoc" type="text" placeholder="Escriu el nom i prem ENTER..." autocomplete="off">
+                <input class="nom-joc-input" id="nomJoc" type="text" placeholder="Escriu el nom i prem ENTER...">
                 <div id="searchingIndicator" class="searching-indicator">
-                    <div class="spinner"></div> Buscant a BoardGameGeek...
+                    <div class="spinner"></div> Buscant...
                 </div>
             </div>
             <div class="meta-pill">👥 <span id="jugadorsVal" contenteditable="true">-</span></div>
             <div class="meta-pill">⏳ <span id="tempsVal" contenteditable="true">-</span></div>
             <div class="meta-pill">🎂 <span id="edatVal" contenteditable="true">-</span></div>
             
-            <div class="grup-selector-wrap">
-                <select id="grupSelect" class="grup-select">
+            <select id="grupSelect" class="grup-select">
+                <option value="P">P</option>
+                <option value="M">M</option>
+                <option value="G">G</option>
+                <option value="J">J</option>
+            </select>
+        </div>
+
+        <div class="fitxa-body">
+            <div class="col-left">
+                <div class="imatge-joc" id="imatgeWrap">
+                    <div style="font-weight: 800; color: #888;">📸 SENSE IMATGE</div>
+                </div>
+                <div class="box">
+                    <div class="box-title">Àrees Curriculars</div>
+                    <select id="etapaSelect" class="filter-input" style="width: 100%; margin-bottom: 10px;">
+                        <option value="primaria">Educació Primària</option>
+                        <option value="eso">ESO</option>
+                    </select>
+                    <div class="checkgrid" id="areasGrid"></div>
+                </div>
+            </div>
+
+            <div class="col-right">
+                <label style="font-weight:900; font-size:.7rem; text-transform:uppercase;">Descripció Pedagògica</label>
+                <div class="desc-box" id="descripcio" contenteditable="true"></div>
+                
+                <label style="font-weight:900; font-size:.7rem; text-transform:uppercase;">Aplicació a l'Aula</label>
+                <div class="aplicacions-box" id="aplicacions" contenteditable="true"></div>
+            </div>
+        </div>
+        <div style="padding: 20px; border-top: 2px solid rgba(0,0,0,0.05);">
+            <label style="font-weight:900; font-size:.7rem; text-transform:uppercase;">Variants i Adaptacions (DUA)</label>
+            <div class="variants-box" id="variants" contenteditable="true"></div>
+        </div>
+    </div>
+
+    <div class="btn-row">
+        <button class="btn btn-nova" id="btnNova">✨ NOU JOC</button>
+        <button class="btn btn-desar" id="btnGuardar">💾 DESAR CANVIS</button>
+        <button class="btn btn-print" id="btnPrint">🖨️ IMPRIMIR</button>
+        <button class="btn btn-delete" id="btnDelete">🗑️ ESBORRAR</button>
+    </div>
+
+    <div class="fitxes-panel">
+        <div class="panel-header">📚 BIBLIOTECA DE CENTRE <span id="counter" style="font-size: 0.7rem;"></span></div>
+        <div class="filter-bar">
+            <div class="filter-block">
+                <label class="filter-label">🔍 Nom</label>
+                <input type="text" id="filterNom" class="filter-input" placeholder="Cerca...">
+            </div>
+            <div class="filter-block">
+                <label class="filter-label">🏷️ Grup</label>
+                <select id="filterGrup" class="filter-input">
+                    <option value="">Tots</option>
                     <option value="P">P</option>
                     <option value="M">M</option>
                     <option value="G">G</option>
@@ -161,85 +210,11 @@
                 </select>
             </div>
         </div>
-
-        <div class="fitxa-body" id="fitxaBody">
-            <div class="col-left">
-                <div class="imatge-joc" id="imatgeWrap">
-                    <div id="imgPlaceholder" style="font-weight: 800; color: #888;">📸 SENSE IMATGE</div>
-                </div>
-                <div class="url-input-wrap">
-                    <input type="text" id="manualUrl" class="filter-input" style="width: 100%; font-size: 0.7rem; margin-top: 8px;" placeholder="URL d'imatge manual...">
-                </div>
-                <div class="box">
-                    <div class="box-title">Àrees Curriculars</div>
-                    <select id="etapaSelect" class="filter-input" style="width: 100%; margin-bottom: 12px; background: var(--salmon-light);">
-                        <option value="primaria">Educació Primària</option>
-                        <option value="eso">Educació Secundària (ESO)</option>
-                    </select>
-                    <div class="checkgrid" id="areasGrid"></div>
-                </div>
-            </div>
-
-            <div class="col-right">
-                <label style="font-weight:900; font-size:.8rem; text-transform:uppercase;">Descripció Pedagògica</label>
-                <div class="desc-box" id="descripcio" contenteditable="true"></div>
-                
-                <label style="font-weight:900; font-size:.8rem; text-transform:uppercase;">Aplicació a l'Aula</label>
-                <div class="aplicacions-box" id="aplicacions" contenteditable="true"></div>
-            </div>
-        </div>
-        <div style="padding: 20px; border-top: 2px solid rgba(0,0,0,0.05); background: inherit;">
-            <label style="font-weight:900; font-size:.8rem; text-transform:uppercase;">Variants i Adaptacions (DUA)</label>
-            <div class="variants-box" id="variants" contenteditable="true"></div>
-        </div>
-    </div>
-
-    <div id="statusMsg" class="status"></div>
-
-    <div class="btn-row">
-        <button class="btn btn-nova" id="btnNova">✨ NOU JOC</button>
-        <button class="btn btn-desar" id="btnGuardar">💾 DESAR CANVIS</button>
-        <button class="btn btn-print" id="btnPrint">🖨️ IMPRIMIR FITXA</button>
-        <button class="btn btn-delete" id="btnDelete">🗑️ ESBORRAR</button>
-    </div>
-
-    <div class="fitxes-panel">
-        <div class="panel-header">📚 BIBLIOTECA DE CENTRE <span id="counter" style="font-size: 0.7rem;"></span></div>
-        
-        <div class="filter-bar">
-            <div class="filter-block">
-                <label class="filter-label">🔍 Nom del Joc</label>
-                <input type="text" id="filterNom" class="filter-input" placeholder="Cerca...">
-            </div>
-            <div class="filter-block">
-                <label class="filter-label">🏷️ Grup / Etapa</label>
-                <select id="filterGrup" class="filter-input">
-                    <option value="">Tots</option>
-                    <option value="P">Grup P</option>
-                    <option value="M">Grup M</option>
-                    <option value="G">Grup G</option>
-                    <option value="J">Grup J</option>
-                </select>
-            </div>
-            <div class="filter-block">
-                <label class="filter-label">🧒 Edat (Mín)</label>
-                <input type="number" id="filterEdat" class="filter-input" placeholder="Anys...">
-            </div>
-            <div class="filter-block">
-                <label class="filter-label">👥 Jugadors</label>
-                <input type="number" id="filterJugadors" class="filter-input" placeholder="Cant...">
-            </div>
-            <div class="filter-block">
-                <label class="filter-label">⏱️ Temps Màx</label>
-                <input type="number" id="filterTemps" class="filter-input" placeholder="Minuts...">
-            </div>
-        </div>
-        
         <div class="fitxes-list" id="fitxesList"></div>
     </div>
 
-    <div class="admin-footer" style="text-align:center; padding:10px; font-size:0.7rem; color:#888;">
-        ID Sessió: <span id="myUid">...</span>
+    <div style="text-align:center; padding:20px; font-size:0.7rem; color:#aaa;">
+        ID Sessió: <span id="myUid">offline</span>
     </div>
 
 <script type="module">
@@ -247,9 +222,10 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    const apiKey = ""; 
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'fitxes-jocs-default';
+    // Configuració de seguretat per entorns externs (GitHub)
+    const apiKey = ""; // L'entorn injectarà la clau automàticament
+    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{"apiKey":"na","authDomain":"na","projectId":"na"}');
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'jocs-taula-lomloe';
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -262,24 +238,11 @@
     let unsubscribeLibrary = null;
 
     const arees = {
-        primaria: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Medi Natural i Social", "Ed. Artística", "Ed. Física", "Valors"],
-        eso: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Física i Química", "Socials", "Ed. Física", "Tecnologia", "Música"]
+        primaria: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Medi Natural i Social", "Ed. Artística", "Ed. Física"],
+        eso: ["Llengua Catalana", "Llengua Castellana", "Llengua Estrangera", "Matemàtiques", "Física i Química", "Socials", "Tecnologia"]
     };
 
-    function loadAreas(etapa) {
-        const grid = document.getElementById('areasGrid');
-        grid.innerHTML = '';
-        if (arees[etapa]) {
-            arees[etapa].forEach(a => {
-                const l = document.createElement('label');
-                l.className = 'check-item';
-                l.innerHTML = `<input type="checkbox" value="${a}"> ${a}`;
-                grid.appendChild(l);
-            });
-        }
-    }
-
-    // NOVA FUNCIÓ: Actualitza els colors de la fitxa segons el grup
+    // FUNCIÓ CRÍTICA: Actualitza colors de la plantilla
     function actualitzarColors(grup) {
         const fitxa = document.getElementById('fitxaActual');
         const select = document.getElementById('grupSelect');
@@ -289,91 +252,23 @@
         if (select) select.style.backgroundColor = color;
     }
 
-    function toggleLoader(show) {
-        const indicator = document.getElementById('searchingIndicator');
-        if (indicator) indicator.style.display = show ? 'block' : 'none';
-        const input = document.getElementById('nomJoc');
-        if (input) input.disabled = show;
+    function loadAreas(etapa) {
+        const grid = document.getElementById('areasGrid');
+        grid.innerHTML = '';
+        arees[etapa].forEach(a => {
+            const l = document.createElement('label');
+            l.className = 'check-item';
+            l.innerHTML = `<input type="checkbox" value="${a}"> ${a}`;
+            grid.appendChild(l);
+        });
     }
 
-    async function searchBGG(name) {
-        if (!name.trim()) return;
-        toggleLoader(true);
-        try {
-            const schema = {
-                type: "OBJECT",
-                properties: {
-                    results: {
-                        type: "ARRAY",
-                        items: {
-                            type: "OBJECT",
-                            properties: {
-                                bggId: { type: "STRING" },
-                                name: { type: "STRING" },
-                                year: { type: "STRING" }
-                            }
-                        }
-                    }
-                },
-                required: ["results"]
-            };
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: `Busca jocs de taula a BoardGameGeek amb el nom "${name}". Retorna fins a 5 resultats exactes amb ID i any.` }] }],
-                    generationConfig: { responseMimeType: "application/json", responseSchema: schema }
-                })
-            });
-            const data = await res.json();
-            const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (!textResult) throw new Error("Sense resultats.");
-            const parsed = JSON.parse(textResult);
-            const items = parsed.results || [];
-            if (items.length > 0) {
-                const list = document.getElementById('searchResultsList');
-                list.innerHTML = '';
-                items.forEach(it => {
-                    const div = document.createElement('div');
-                    div.className = 'search-result-item';
-                    div.innerHTML = `${it.name} (${it.year}) <span>➔</span>`;
-                    div.onclick = () => {
-                        document.getElementById('searchModal').style.display = 'none';
-                        fetchDetails(it.bggId, it.name);
-                    };
-                    list.appendChild(div);
-                });
-                document.getElementById('searchModal').style.display = 'flex';
-            } else {
-                alert("No s'ha trobat cap joc.");
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Error en la cerca.");
-        } finally {
-            toggleLoader(false);
+    async function callGemini(prompt, schema) {
+        if (!apiKey) {
+            console.warn("Falta API Key. Cerca limitada.");
+            return null;
         }
-    }
-
-    async function fetchDetails(id, name) {
-        toggleLoader(true);
-        const etapa = document.getElementById('etapaSelect').value;
         try {
-            const schema = {
-                type: "OBJECT",
-                properties: {
-                    name: { type: "STRING" },
-                    players: { type: "STRING" },
-                    time: { type: "STRING" },
-                    age: { type: "STRING" },
-                    imageUrl: { type: "STRING" },
-                    desc: { type: "STRING" },
-                    edu: { type: "STRING" }
-                },
-                required: ["name", "players", "time", "age", "imageUrl", "desc", "edu"]
-            };
-            const prompt = `Proporciona detalls en català del joc BGG ${id} (${name}) per a l'etapa de ${etapa}. Inclou una descripció narrativa pedagògica i com aplicar-lo a l'aula segons competències. Edat com a número sol (ex: 8). Temps com a número sol (ex: 30). Jugadors com a rang (ex: 2-4).`;
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const res = await fetch(url, {
                 method: 'POST',
@@ -384,63 +279,89 @@
                 })
             });
             const data = await res.json();
-            const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (!textResult) throw new Error("No s'han rebut detalls.");
-            const resData = JSON.parse(textResult);
+            return JSON.parse(data.candidates?.[0]?.content?.parts?.[0]?.text || "{}");
+        } catch (e) {
+            console.error("Error API:", e);
+            return null;
+        }
+    }
+
+    async function searchBGG(name) {
+        if (!name.trim()) return;
+        const indicator = document.getElementById('searchingIndicator');
+        indicator.style.display = 'block';
+        
+        const schema = {
+            type: "OBJECT",
+            properties: {
+                results: { type: "ARRAY", items: { type: "OBJECT", properties: { 
+                    bggId: { type: "STRING" }, name: { type: "STRING" }, year: { type: "STRING" } 
+                } } }
+            }
+        };
+
+        const data = await callGemini(`Troba el joc de taula "${name}" a BoardGameGeek. Retorna llista de IDs.`, schema);
+        indicator.style.display = 'none';
+
+        if (data && data.results && data.results.length > 0) {
+            const list = document.getElementById('searchResultsList');
+            list.innerHTML = '';
+            data.results.forEach(it => {
+                const div = document.createElement('div');
+                div.className = 'search-result-item';
+                div.innerHTML = `${it.name} (${it.year}) ➔`;
+                div.onclick = () => {
+                    document.getElementById('searchModal').style.display = 'none';
+                    fetchDetails(it.bggId, it.name);
+                };
+                list.appendChild(div);
+            });
+            document.getElementById('searchModal').style.display = 'flex';
+        }
+    }
+
+    async function fetchDetails(id, name) {
+        const indicator = document.getElementById('searchingIndicator');
+        indicator.style.display = 'block';
+        
+        const schema = {
+            type: "OBJECT",
+            properties: {
+                name: { type: "STRING" }, players: { type: "STRING" }, time: { type: "STRING" },
+                age: { type: "STRING" }, imageUrl: { type: "STRING" }, desc: { type: "STRING" },
+                edu: { type: "STRING" }
+            }
+        };
+
+        const resData = await callGemini(`Detalla en català el joc BGG ID ${id} per a l'escola.`, schema);
+        indicator.style.display = 'none';
+
+        if (resData) {
             document.getElementById('nomJoc').value = resData.name;
             document.getElementById('jugadorsVal').innerText = resData.players;
             document.getElementById('tempsVal').innerText = resData.time;
             document.getElementById('edatVal').innerText = resData.age;
             document.getElementById('descripcio').innerText = resData.desc;
             document.getElementById('aplicacions').innerText = resData.edu;
-            updateImg(resData.imageUrl);
-        } catch (e) { 
-            console.error(e);
-            alert("Error carregant els detalls."); 
-        } finally { 
-            toggleLoader(false); 
+            currentImageUrl = resData.imageUrl;
+            document.getElementById('imatgeWrap').innerHTML = `<img src="${resData.imageUrl}">`;
         }
     }
 
-    function updateImg(url) {
-        currentImageUrl = url;
-        const w = document.getElementById('imatgeWrap');
-        if (w) w.innerHTML = url ? `<img src="${url}">` : `<div style="color:#888">📸 SENSE IMATGE</div>`;
-    }
-
-    function render() {
+    function renderLibrary() {
         const list = document.getElementById('fitxesList');
-        if (!list) return;
-
         const fNom = document.getElementById('filterNom').value.toLowerCase();
         const fGrup = document.getElementById('filterGrup').value;
-        const fEdat = parseInt(document.getElementById('filterEdat').value) || 0;
-        const fJugadors = parseInt(document.getElementById('filterJugadors').value) || 0;
-        const fTemps = parseInt(document.getElementById('filterTemps').value) || 9999;
-        
+
         const filtered = allGames.filter(g => {
-            const matchesNom = (g.nom || "").toLowerCase().includes(fNom);
-            const matchesGrup = fGrup === "" || g.grup === fGrup;
-            const gameAge = parseInt(g.edat) || 0;
-            const gameTime = parseInt(g.temps) || 0;
-            const gamePlayersRaw = (g.jugadors || "").split('-')[0];
-            const gamePlayers = parseInt(gamePlayersRaw) || 0;
-
-            const matchesEdat = fEdat === 0 || gameAge >= fEdat;
-            const matchesJugadors = fJugadors === 0 || gamePlayers <= fJugadors;
-            const matchesTemps = gameTime <= fTemps;
-
-            return matchesNom && matchesGrup && matchesEdat && matchesJugadors && matchesTemps;
+            return (g.nom || "").toLowerCase().includes(fNom) && (fGrup === "" || g.grup === fGrup);
         });
-        
+
         list.innerHTML = '';
-        const counter = document.getElementById('counter');
-        if (counter) counter.innerText = `(${filtered.length} jocs)`;
-        
         filtered.forEach(g => {
             const d = document.createElement('div');
             d.className = 'card';
-            d.innerHTML = `<img src="${g.imatge || 'https://placehold.co/70'}"><div><b>${g.nom}</b><br><small>Grup ${g.grup} • ${g.edat}+ anys • ${g.temps}min</small></div>`;
+            d.innerHTML = `<img src="${g.imatge || 'https://placehold.co/60'}"><div><b>${g.nom}</b><br><small>Grup ${g.grup} • ${g.edat}+ anys</small></div>`;
             d.onclick = () => {
                 currentDocId = g.id;
                 document.getElementById('nomJoc').value = g.nom;
@@ -448,44 +369,38 @@
                 document.getElementById('tempsVal').innerText = g.temps;
                 document.getElementById('edatVal').innerText = g.edat;
                 document.getElementById('grupSelect').value = g.grup;
-                actualitzarColors(g.grup); // Actualitza color al carregar
+                actualitzarColors(g.grup);
                 document.getElementById('descripcio').innerText = g.descripcio;
                 document.getElementById('aplicacions').innerText = g.aplicacions;
                 document.getElementById('variants').innerText = g.variants || '';
-                updateImg(g.imatge);
+                currentImageUrl = g.imatge;
+                document.getElementById('imatgeWrap').innerHTML = g.imatge ? `<img src="${g.imatge}">` : '📸';
                 document.getElementById('btnDelete').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
             list.appendChild(d);
         });
+        document.getElementById('counter').innerText = `(${filtered.length})`;
     }
 
-    document.getElementById('nomJoc').addEventListener('keydown', e => {
-        if (e.key === 'Enter') searchBGG(e.target.value);
-    });
-
-    document.getElementById('grupSelect').addEventListener('change', e => {
-        actualitzarColors(e.target.value);
-    });
+    // Events
+    document.getElementById('nomJoc').onkeydown = e => e.key === 'Enter' && searchBGG(e.target.value);
+    document.getElementById('grupSelect').onchange = e => actualitzarColors(e.target.value);
+    document.getElementById('etapaSelect').onchange = e => loadAreas(e.target.value);
+    document.getElementById('filterNom').oninput = renderLibrary;
+    document.getElementById('filterGrup').onchange = renderLibrary;
 
     document.getElementById('btnNova').onclick = () => {
         currentDocId = null;
         document.getElementById('nomJoc').value = '';
-        document.getElementById('jugadorsVal').innerText = '-';
-        document.getElementById('tempsVal').innerText = '-';
-        document.getElementById('edatVal').innerText = '-';
         document.getElementById('grupSelect').value = 'P';
-        actualitzarColors('P'); // Reset a color per defecte
-        document.getElementById('descripcio').innerText = '';
-        document.getElementById('aplicacions').innerText = '';
-        document.getElementById('variants').innerText = '';
-        updateImg(null);
+        actualitzarColors('P');
         document.getElementById('btnDelete').style.display = 'none';
-        document.getElementById('nomJoc').focus();
+        document.getElementById('imatgeWrap').innerHTML = '📸';
     };
 
     document.getElementById('btnGuardar').onclick = async () => {
-        if (!currentUser) { alert("Connectant..."); return; }
+        if (!currentUser) return;
         const data = {
             nom: document.getElementById('nomJoc').value,
             jugadors: document.getElementById('jugadorsVal').innerText,
@@ -499,58 +414,43 @@
             updated: Date.now()
         };
         try {
-            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
             if (currentDocId) {
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId), data);
             } else {
-                await addDoc(colRef, data);
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), data);
             }
-            alert("Fitxa desada!");
-        } catch (e) { 
-            console.error(e); 
-            alert("Error al desar."); 
-        }
-    };
-
-    document.getElementById('btnDelete').onclick = async () => {
-        if (!currentDocId || !confirm("Esborrar fitxa?")) return;
-        try {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'jocs', currentDocId));
-            document.getElementById('btnNova').click();
-        } catch (e) { console.error(e); }
+            alert("Desat correctament!");
+        } catch (e) { alert("Error al desar."); }
     };
 
     document.getElementById('btnPrint').onclick = () => window.print();
-    
-    ['filterNom', 'filterGrup', 'filterEdat', 'filterJugadors', 'filterTemps'].forEach(id => {
-        document.getElementById(id).addEventListener('input', render);
-    });
 
-    document.getElementById('etapaSelect').addEventListener('change', (e) => loadAreas(e.target.value));
+    // Init
+    loadAreas('primaria');
+    actualitzarColors('P');
 
-    const initAuthAndData = async () => {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-            await signInAnonymously(auth);
-        }
+    const initAuth = async () => {
+        try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+        } catch(e) { console.warn("Auth offline mode active."); }
     };
 
     onAuthStateChanged(auth, user => {
         currentUser = user;
         if (user) {
-            document.getElementById('myUid').innerText = user.uid;
-            const q = collection(db, 'artifacts', appId, 'public', 'data', 'jocs');
-            if (unsubscribeLibrary) unsubscribeLibrary();
-            unsubscribeLibrary = onSnapshot(q, (snapshot) => {
-                allGames = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                render();
+            document.getElementById('myUid').innerText = user.uid.substring(0,8);
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'jocs'), snap => {
+                allGames = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderLibrary();
             });
         }
     });
 
-    loadAreas('primaria');
-    initAuthAndData();
+    initAuth();
 </script>
 </body>
 </html>
