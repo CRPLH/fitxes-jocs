@@ -79,7 +79,9 @@ a.step-link:hover{text-decoration:underline;}
 .btn-delete{background:var(--red);color:white;display:none;}
 .btn-cancel{background:#eee;color:var(--text);}
 
-.status{font-size:.78rem;color:var(--teal);font-weight:700;margin:4px auto;min-height:18px;text-align:center;max-width:900px;}
+.status{font-size:.85rem;color:var(--teal);font-weight:700;margin:8px auto;min-height:24px;text-align:center;max-width:900px;padding:10px 18px;border-radius:10px;background:#eaf8f6;border:2px solid var(--teal);display:none;}
+.status.visible{display:block;}
+.status.err{color:var(--red);background:#fdecea;border-color:var(--red);display:block;}
 .status.err{color:var(--red);}
 
 /* SPINNER */
@@ -122,6 +124,21 @@ a.step-link:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
+
+<!-- MODAL CLAU API -->
+<div class="modal-overlay" id="modalApiKey">
+  <div class="modal-box">
+    <h2>🔑 Clau API de Claude</h2>
+    <p style="margin-bottom:10px">Introdueix la teva clau API d'Anthropic. Es guardarà al navegador (localStorage) i <strong>mai</strong> al codi font.</p>
+    <label>Clau API (<code>sk-ant-...</code>)</label>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off" style="margin-bottom:6px">
+    <p style="font-size:.72rem;color:#aaa">Obté-la a <a class="step-link" href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com/settings/keys</a></p>
+    <div class="modal-btns">
+      <button class="btn btn-cancel" id="btnTancarApiKey">Tancar</button>
+      <button class="btn btn-desar" id="btnDesarApiKey">💾 Desar</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL RESULTATS CERCA -->
 <div class="modal-overlay" id="modalCerca">
@@ -190,6 +207,7 @@ a.step-link:hover{text-decoration:underline;}
 <div id="statusMsg" class="status"></div>
 
 <div class="btn-row">
+  <button class="btn" id="btnApiKey" style="background:#555;color:white;">🔑 Clau API</button>
   <button class="btn btn-nova" id="btnNova">&#10011; Nou joc</button>
   <button class="btn btn-desar" id="btnGuardar">&#9729; Desar a Firebase</button>
   <button class="btn btn-print" onclick="window.print()">&#128438; Imprimir</button>
@@ -302,7 +320,7 @@ const AREES = {
 
 // ===== UTILS =====
 function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function setStatus(html, isErr){ const el=document.getElementById('statusMsg'); el.innerHTML=html; el.className='status'+(isErr?' err':''); }
+function setStatus(html, isErr){ const el=document.getElementById('statusMsg'); el.innerHTML=html; if(!html){ el.className='status'; } else { el.className='status visible'+(isErr?' err':''); } }
 function obrirModal(id){ document.getElementById(id).classList.add('open'); }
 function tancarModal(id){ document.getElementById(id).classList.remove('open'); }
 window.obrirModal = obrirModal;
@@ -382,7 +400,7 @@ async function cercaBGG(nom){
   if(!nom) return;
   const ind = document.getElementById('searchIndicator');
   ind.style.display = 'block';
-  setStatus('<span class="spinner dark"></span> Cercant "'+escHtml(nom)+'" a BoardGameGeek...');
+  setStatus('🔍 Cercant <strong>"'+escHtml(nom)+'"</strong> a BoardGameGeek... (pot trigar uns segons)');
   try{
     const prompt = 'Cerca el joc de taula "'+nom+'" a BoardGameGeek. Retorna NOMES un JSON array valid (sense markdown) amb format:\n[{"id":"ID_BGG_NUMERIC","name":"Nom oficial","year":"Any publicacio"}]\nMaxim 6 resultats ordenats per rellevancia. Si no en trobes, retorna [].';
     const data = await callClaude(prompt, true);
@@ -412,7 +430,7 @@ async function carregarDetalls(bggId, nomFallback){
   const ind = document.getElementById('searchIndicator');
   ind.style.display = 'block';
   currentImageB64 = null;
-  setStatus('<span class="spinner dark"></span> Carregant fitxa del joc...');
+  setStatus('📋 Generant fitxa pedagògica del joc... (pot trigar uns segons)');
   try{
     const etapa = document.getElementById('etapaSelect').value;
     const prompt = 'Busca a BoardGameGeek el joc amb ID '+bggId+' (nom: "'+nomFallback+'").\n'+
@@ -442,7 +460,7 @@ async function carregarDetalls(bggId, nomFallback){
       wrap.innerHTML = '<div class="imatge-placeholder"><span class="spinner dark"></span><br>Carregant imatge...</div>';
       carregarImatge(joc.imageUrl, joc.name||nomFallback, wrap);
     }
-    setStatus('Fitxa carregada! Revisa i desa els canvis.');
+    setStatus('✅ Fitxa carregada! Revisa les dades i desa els canvis.');
   }catch(e){
     ind.style.display='none';
     setStatus('Error: '+e.message, true);
@@ -607,21 +625,76 @@ function carregarFitxaCard(g){
 ['filterNom','filterGrup','filterEtapa','filterArea','filterTemps'].forEach(id=>{
   document.getElementById(id).addEventListener('input', renderBiblioteca);
 });
-
 // ===== CLAUDE API =====
+function getApiKey(){ return localStorage.getItem('bgg_claude_key')||''; }
+function setApiKey(k){ localStorage.setItem('bgg_claude_key', k); }
+const CLAUDE_HEADERS = {
+  'Content-Type':'application/json',
+  'x-api-key': getApiKey(),
+  'anthropic-version': '2023-06-01',
+  'anthropic-dangerous-direct-browser-access': 'true'
+};
+
 function extractText(data){
   if(!data||!data.content) return '';
   return data.content.map(b=>b.type==='text'?b.text:'').filter(Boolean).join('');
 }
 function safeJSON(text, fallback){
-  try{ const m=text.replace(/```json|```/g,'').trim().match(/(\[[\s\S]*?\]|\{[\s\S]*?\})/); return m?JSON.parse(m[0]):fallback; }
+  try{ const m=text.replace(/```json|```/g,'').trim().match(/(\[\s\S]*?\]|\{[\s\S]*?\})/); return m?JSON.parse(m[0]):fallback; }
   catch(e){ return fallback; }
 }
+
+// Gestiona múltiples rondes: web_search pot retornar stop_reason='tool_use' i cal continuar
 async function callClaude(prompt, useSearch){
-  const body={model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]};
-  if(useSearch) body.tools=[{type:'web_search_20250305',name:'web_search'}];
-  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  return r.json();
+  if(!getApiKey()) throw new Error('Cal configurar la clau API. Fes clic al botó ⚙ Clau API.');
+  const messages = [{role:'user', content: prompt}];
+  let rounds = 0;
+  while(rounds < 6){
+    rounds++;
+    const body = {model:'claude-sonnet-4-20250514', max_tokens:2000, messages};
+    if(useSearch) body.tools = [{type:'web_search_20250305', name:'web_search'}];
+    const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:CLAUDE_HEADERS,body:JSON.stringify(body)});
+    const data = await r.json();
+    if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+    if(data.stop_reason === 'end_turn') return data;
+    if(data.stop_reason === 'tool_use'){
+      // Afegim la resposta de l'assistent i els resultats buits de les eines (la cerca la fa el servidor)
+      messages.push({role:'assistant', content: data.content});
+      const toolResults = data.content
+        .filter(b => b.type === 'tool_use')
+        .map(b => ({type:'tool_result', tool_use_id: b.id, content:'executed'}));
+      if(toolResults.length) messages.push({role:'user', content: toolResults});
+      else return data;
+    } else {
+      return data; // stop_reason desconegut però tenim contingut
+    }
+  }
+  throw new Error('Masses rondes sense resposta final.');
+}
+
+
+// ===== CLAU API MODAL =====
+document.getElementById('btnApiKey').addEventListener('click', ()=>{
+  const current = getApiKey();
+  document.getElementById('apiKeyInput').value = current;
+  document.getElementById('modalApiKey').classList.add('open');
+});
+document.getElementById('btnTancarApiKey').addEventListener('click', ()=>{
+  document.getElementById('modalApiKey').classList.remove('open');
+});
+document.getElementById('btnDesarApiKey').addEventListener('click', ()=>{
+  const k = document.getElementById('apiKeyInput').value.trim();
+  if(!k.startsWith('sk-ant-')){ setStatus('La clau ha de començar per sk-ant-', true); return; }
+  setApiKey(k);
+  document.getElementById('modalApiKey').classList.remove('open');
+  setStatus('✅ Clau API desada correctament al navegador.');
+  setTimeout(()=>setStatus(''), 3000);
+});
+// Mostrar avís si no hi ha clau configurada
+if(!getApiKey()){
+  setTimeout(()=>{
+    setStatus('⚠️ Configura la teva clau API per poder cercar jocs. Fes clic a 🔑 Clau API.');
+  }, 1500);
 }
 
 // ===== INIT =====
